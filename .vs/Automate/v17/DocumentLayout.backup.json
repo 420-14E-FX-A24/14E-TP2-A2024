@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\tp2_14e_a24-main\\tp2_14e_a24-main\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\tp2_14e_a24-main\\tp2_14e_a24-main\\utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\tp2_14e_a24-main\\tp2_14e_a24-main\\utils\\mongodbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:utils\\mongodbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LoginViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\ViewModels\\LoginViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\LoginViewModel.cs",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\ViewModels\\LoginViewModel.cs*",
+              "RelativeToolTip": "ViewModels\\LoginViewModel.cs*",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAYwBEAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T17:02:37.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RelayCommand.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\RelayCommand.cs",
+              "RelativeDocumentMoniker": "Utils\\RelayCommand.cs",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\RelayCommand.cs*",
+              "RelativeToolTip": "Utils\\RelayCommand.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T17:01:56.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MongoDBService.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\MongoDBService.cs",
+              "RelativeDocumentMoniker": "Utils\\MongoDBService.cs",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\MongoDBService.cs*",
+              "RelativeToolTip": "Utils\\MongoDBService.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAACDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T17:00:36.245Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
