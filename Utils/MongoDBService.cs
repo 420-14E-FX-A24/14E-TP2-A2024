@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,12 @@ namespace Automate.Utils
             var client = new MongoClient("mongodb://localhost:27017"); // URL du serveur MongoDB
             _database = client.GetDatabase(databaseName);
             _users = _database.GetCollection<UserModel>("Users");
+            var premierUtilisateur = _users.Find(Builders<UserModel>.Filter.Empty).FirstOrDefault();
+            if(premierUtilisateur is null)
+            {
+                premierUtilisateur = new UserModel { Username = "Frederic", Password = ".", Role = "Admin" };
+                _users.InsertOne(premierUtilisateur);
+            }   
         }
 
         public IMongoCollection<T> GetCollection<T>(string collectionName) 
@@ -34,6 +41,8 @@ namespace Automate.Utils
         {
             _users.InsertOne(user);
         }
+
+
 
     }
 
