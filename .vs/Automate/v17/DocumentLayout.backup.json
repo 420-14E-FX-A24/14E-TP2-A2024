@@ -1,64 +1,178 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\",
+  "WorkspaceRootPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\tp2_14e_a24-main\\tp2_14e_a24-main\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\views\\loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:views\\loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\0700850\\AppData\\Local\\Temp\\.vsdbgsrc\\289960d74eab1ad4756d0052f9fc3c03d1d06f75ea0a80eea44b8ac83ec7238d\\XamlReader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\views\\accueilwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:views\\accueilwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\views\\accueilwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:views\\accueilwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\utils\\mongodbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:utils\\mongodbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\tp2_14e_a24-main\\tp2_14e_a24-main\\utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\tp2_14e_a24-main\\tp2_14e_a24-main\\utils\\mongodbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:utils\\mongodbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|c:\\users\\0700850\\desktop\\session 5\\420-14e-fx conception et qualit\u00E9 logicielle\\semaine 8\\14e-tp2-a2024\\automate.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{D60E0DA0-8AA3-4028-94F2-8149868FC5F3}|Automate.csproj|solutionrelative:automate.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     }
   ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
-      "VerticalTabListWidth": 256,
+      "VerticalTabListWidth": 418,
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LoginWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Views\\LoginWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\LoginWindow.xaml",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Views\\LoginWindow.xaml",
+              "RelativeToolTip": "Views\\LoginWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-10-29T17:14:11.946Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "XamlReader.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\AppData\\Local\\Temp\\.vsdbgsrc\\289960d74eab1ad4756d0052f9fc3c03d1d06f75ea0a80eea44b8ac83ec7238d\\XamlReader.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\289960d74eab1ad4756d0052f9fc3c03d1d06f75ea0a80eea44b8ac83ec7238d\\XamlReader.cs",
+              "ToolTip": "C:\\Users\\0700850\\AppData\\Local\\Temp\\.vsdbgsrc\\289960d74eab1ad4756d0052f9fc3c03d1d06f75ea0a80eea44b8ac83ec7238d\\XamlReader.cs [Lecture seule]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\289960d74eab1ad4756d0052f9fc3c03d1d06f75ea0a80eea44b8ac83ec7238d\\XamlReader.cs [Lecture seule]",
+              "ViewState": "AgIAAKoBAAAAAAAAAAAvwNkBAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T17:12:58.791Z",
+              "EditorCaption": " [Lecture seule]"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-10-29T16:48:50.839Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AccueilWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Views\\AccueilWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\AccueilWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Views\\AccueilWindow.xaml.cs",
+              "RelativeToolTip": "Views\\AccueilWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T16:41:34.775Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AccueilWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Views\\AccueilWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\AccueilWindow.xaml",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Views\\AccueilWindow.xaml",
+              "RelativeToolTip": "Views\\AccueilWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-10-29T16:41:44.341Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwBYAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T14:35:13.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Automate",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Automate.csproj",
+              "RelativeDocumentMoniker": "Automate.csproj",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Automate.csproj",
+              "RelativeToolTip": "Automate.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-10-29T14:27:01.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "LoginViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\ViewModels\\LoginViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\ViewModels\\LoginViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\LoginViewModel.cs",
-              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\ViewModels\\LoginViewModel.cs*",
-              "RelativeToolTip": "ViewModels\\LoginViewModel.cs*",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAYwBEAAAARAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\ViewModels\\LoginViewModel.cs",
+              "RelativeToolTip": "ViewModels\\LoginViewModel.cs",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAjwKMAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-22T17:02:37.768Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "RelayCommand.cs",
-              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\RelayCommand.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Utils\\RelayCommand.cs",
               "RelativeDocumentMoniker": "Utils\\RelayCommand.cs",
-              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\RelayCommand.cs*",
-              "RelativeToolTip": "Utils\\RelayCommand.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABJAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Utils\\RelayCommand.cs",
+              "RelativeToolTip": "Utils\\RelayCommand.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAWwDAAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-22T17:01:56.407Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "MongoDBService.cs",
-              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\MongoDBService.cs",
+              "DocumentMoniker": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Utils\\MongoDBService.cs",
               "RelativeDocumentMoniker": "Utils\\MongoDBService.cs",
-              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Utils\\MongoDBService.cs*",
-              "RelativeToolTip": "Utils\\MongoDBService.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAACDAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALIT\u00C9 LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Utils\\MongoDBService.cs",
+              "RelativeToolTip": "Utils\\MongoDBService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwBkAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-22T17:00:36.245Z",
               "EditorCaption": ""

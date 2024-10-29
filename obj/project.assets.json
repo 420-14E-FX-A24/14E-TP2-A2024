@@ -1878,11 +1878,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Automate.csproj",
+      "projectUniqueName": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Automate.csproj",
       "projectName": "Automate",
-      "projectPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Automate.csproj",
+      "projectPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Automate.csproj",
       "packagesPath": "C:\\Users\\0700850\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\obj\\",
+      "outputPath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\14E-TP2-A2024\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\0700850\\AppData\\Roaming\\NuGet\\NuGet.Config",

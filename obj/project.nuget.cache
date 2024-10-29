@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YA5aKFlgNUs=",
+  "dgSpecHash": "16uTp+CIUI8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\TP2_14E_A24-main\\TP2_14E_A24-main\\Automate.csproj",
+  "projectFilePath": "C:\\Users\\0700850\\Desktop\\session 5\\420-14E-FX CONCEPTION ET QUALITÉ LOGICIELLE\\semaine 8\\14E-TP2-A2024\\Automate.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\0700850\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\0700850\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

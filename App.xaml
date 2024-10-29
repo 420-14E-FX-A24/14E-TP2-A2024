@@ -6,7 +6,6 @@
              xmlns:ui="http://schemas.modernwpf.com/2019"
              >
     <Application.Resources>
-        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemeResources RequestedTheme="Light" />
