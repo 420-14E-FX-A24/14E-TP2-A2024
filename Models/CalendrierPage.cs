@@ -51,7 +51,7 @@ namespace Automate.Models
             Mois = mois;
             int JourDansMois = DateTime.DaysInMonth(annee, mois);
             //Traitement de vérification/correction sur les jours.
-            for (int i = 0; i < JourDansMois; i++)
+            for (int i = 1; i < JourDansMois; i++)
             {
                 DateTime date = new DateTime(annee, mois, i);
                 if (jours.Count != JourDansMois)
