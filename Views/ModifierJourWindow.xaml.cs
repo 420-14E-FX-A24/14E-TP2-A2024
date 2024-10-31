@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Automate.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +16,14 @@ using System.Windows.Shapes;
 namespace Automate.Views
 {
     /// <summary>
-    /// Logique d'interaction pour CalendrierPageWindow.xaml
+    /// Logique d'interaction pour ModifierJourWindow.xaml
     /// </summary>
-    public partial class CalendrierPageWindow : Window
+    public partial class ModifierJourWindow : Window
     {
-        public CalendrierPageWindow()
+        public ModifierJourWindow()
         {
             InitializeComponent();
+            DataContext = new LoginViewModel(this);
         }
     }
 }

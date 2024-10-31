@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using static Automate.Models.Jour;
 using System.Windows.Media;
+using Microsoft.VisualBasic;
 
 namespace Automate.Models
 {
@@ -17,10 +18,10 @@ namespace Automate.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
-        [BsonElement("timeCreated")]
+        [BsonElement("TimeCreated")]
         public DateTime TimeCreated { get; set; }
 
-        [BsonElement("timeUpdated")]
+        [BsonElement("TimeUpdated")]
         [BsonIgnoreIfNull]
         public DateTime TimeUpdated { get; set; }
 
@@ -28,7 +29,7 @@ namespace Automate.Models
         [BsonIgnoreIfNull]
         public List<Tache> Taches { get; set; }
 
-        [BsonElement("CommentairesTaches")]
+        [BsonElement("CommentaireTaches")]
         [BsonIgnoreIfNull]
         public List<string> CommentaireTaches { get; set; }
 
@@ -38,6 +39,8 @@ namespace Automate.Models
         [BsonElement("Numero")]
         public int Numero {  get; set; }
 
+        [BsonElement("Date")]
+        public DateTime Date { get; set; }
 
         public enum Tache
         {
@@ -61,6 +64,7 @@ namespace Automate.Models
             CommentaireTaches = new List<string>();
             NombreAlertes = 0;
             Numero = DateAujourdhui.Day;
+            Date = DateAujourdhui.ToLocalTime();
         }
 
         public Jour(DateTime date)
@@ -71,9 +75,10 @@ namespace Automate.Models
             CommentaireTaches = new List<string>();
             NombreAlertes = 0;
             Numero = date.Day;
+            Date = date.ToLocalTime();
         }
 
-        public Jour(List<Tache> taches, List<string> commentairesTaches, int numero)
+        public Jour(List<Tache> taches, List<string> commentairesTaches, int numero, DateTime date)
         {
             DateTime DateAujourdhui = DateTime.Now;
             TimeCreated = DateAujourdhui;
@@ -86,6 +91,7 @@ namespace Automate.Models
             });
             NombreAlertes = traitementTacheAlertes.Count;
             Numero = numero;
+            Date = date.ToLocalTime();
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Automate.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -50,15 +51,31 @@ namespace Automate.Utils
 
         public List<Jour> ConsulterJourCalendrierPage(DateTime date)
         {
-            var Date = date;
             int JourDuMois = date.Day;
-            var DepartJour = date.DayOfYear - JourDuMois;
-            int FinJour = DepartJour + DateTime.DaysInMonth(Date.Year, Date.Month);
-            var dateFiltre = Builders<Jour>.Filter.And(
-                Builders<Jour>.Filter.Gte(doc => doc.TimeCreated.DayOfYear, DepartJour),
-                Builders<Jour>.Filter.Lte(doc => doc.TimeCreated.DayOfYear, FinJour)
+            int DepartJour = date.DayOfYear - JourDuMois;
+            int FinJour = DepartJour + DateTime.DaysInMonth(date.Year, date.Month);
+
+            var filter = new BsonDocument("$expr", new BsonDocument("$and", new BsonArray
+            {
+                new BsonDocument("$gte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), DepartJour }),
+                new BsonDocument("$lte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), FinJour })
+            }));
+
+            return _jours.Find(filter).ToList();
+
+            
+        }
+
+        public Jour ModifierJour(DateTime date)
+        {
+            DateTime dateLocale = date.ToLocalTime().Date;
+            var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
+            var filter = Builders<Jour>.Filter.And(
+                Builders<Jour>.Filter.Gte(j => j.Date, dateLocale),
+                Builders<Jour>.Filter.Lt(j => j.Date, dateLocale.AddDays(1))
             );
-            return _jours.Find(dateFiltre).ToList();
+            var result = _jours.Find(filter).FirstOrDefault();
+            return result;
         }
 
         public void RegisterUser(UserModel user)
