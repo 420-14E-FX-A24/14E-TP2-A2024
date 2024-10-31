@@ -10,6 +10,8 @@ namespace Automate.Models
 {
     public class UserModel
     {
+        internal DateTime TimeUpdated;
+
         [BsonId]
         public ObjectId Id { get; set; }
 
@@ -21,5 +23,6 @@ namespace Automate.Models
 
         [BsonElement("Role")]
         public string? Role { get; set; }
+        public DateTime TimeCreated { get; internal set; }
     }
 }

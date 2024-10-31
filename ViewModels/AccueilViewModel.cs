@@ -1,6 +1,7 @@
 ﻿using Automate.Models;
 using Automate.Utils;
 using Automate.Views;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using static Automate.Models.CalendrierPageModel;
+using static Automate.Models.Jour;
 
 namespace Automate.ViewModels
 {
@@ -20,15 +21,16 @@ namespace Automate.ViewModels
     {
       
         //Propriétés du ViewModel
-        private int _annee;
-        private int _mois;
-     
+      
+        private Jour _jours;
+        private string? _leMois;
+        private string? _annee;
 
         //commandes utilisées par l'interface
-        public ICommand ConsulterCalendrierPageCommand { get; }
+        public ICommand ConsulterJourCalendrierPageCommand { get; }
         private readonly NavigationService _navigationService;
         private readonly MongoDBService _mongoService;
-        private CalendrierPageModel _calendrierPage;
+        
 
         //dictionnaire des erreurs de validation
         private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
@@ -39,9 +41,9 @@ namespace Automate.ViewModels
 
         //commandes utilisées par l'interface
         public bool HasErrors => _errors.Count > 0;
+        public bool HasLeMoisErrors => _errors.ContainsKey(nameof(LeMois)) && _errors[nameof(LeMois)].Any();
         public bool HasAnneeErrors => _errors.ContainsKey(nameof(Annee)) && _errors[nameof(Annee)].Any();
-        public bool HasMoisErrors => _errors.ContainsKey(nameof(Mois)) && _errors[nameof(Mois)].Any();
-       
+
 
         //référence à la vue
         private Window _window;
@@ -50,7 +52,7 @@ namespace Automate.ViewModels
         {
             //instanciation de la BD
             _mongoService = new MongoDBService("AutomateDB");
-            ConsulterCalendrierPageCommand = new RelayCommand(ConsulterCalendrierPage);
+            ConsulterJourCalendrierPageCommand = new RelayCommand(ConsulterJourCalendrierPage);
             _navigationService = new NavigationService();
             _window = openedWindow;
 
@@ -58,7 +60,19 @@ namespace Automate.ViewModels
        
         //propriétés
 
-        public int Annee
+
+        public string? LeMois
+        {
+            get => _leMois;
+            set
+            {
+                _leMois = value;
+                OnPropertyChanged(nameof(LeMois));
+                ValidateProperty(nameof(LeMois));
+            }
+        }
+
+        public string? Annee
         {
             get => _annee;
             set
@@ -68,19 +82,6 @@ namespace Automate.ViewModels
                 ValidateProperty(nameof(Annee));
             }
         }
-
-
-        public int Mois
-        {
-            get => _mois;
-            set
-            {
-                _mois = value;
-                OnPropertyChanged(nameof(Mois));
-                ValidateProperty(nameof(Mois));
-            }
-        }
-
 
 
         public string ErrorMessages
@@ -106,12 +107,14 @@ namespace Automate.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void ConsulterCalendrierPage()
+        public void ConsulterJourCalendrierPage()
         {
             ValidateProperty(nameof(Annee));
-            ValidateProperty(nameof(Mois));
-
-            var donneeCalendrierPage = _mongoService.ConsulterCalendrierPage(Annee, Mois);
+            ValidateProperty(nameof(LeMois));
+            int annee = int.Parse(Annee);
+            int mois = int.Parse(LeMois);
+            DateTime date = new DateTime(annee, mois, 1);
+            var donneeCalendrierPage = _mongoService.ConsulterJourCalendrierPage(date);
             if (donneeCalendrierPage == null)
             {
                 AddError("Calendrier", "Année ou mois invalide.");
@@ -121,7 +124,7 @@ namespace Automate.ViewModels
             {
                 _navigationService.NavigateTo<CalendrierPageWindow>();
                 _navigationService.Close(_window);
-                Trace.WriteLine($"Accéder à calendrier Annee: {Annee}, Mois: {Mois}");
+                Trace.WriteLine($"Accéder à calendrier Annee: {Annee}, Mois: {LeMois}");
             }
         }
 
@@ -130,17 +133,27 @@ namespace Automate.ViewModels
             switch (propertyName)
             {
                 case nameof(Annee):
-                    if (Annee < 2024 || Annee > 2025)
-                        AddError(nameof(Annee), "L'année doit être entre 2024 et 2025, inclusivement.");
+                    int iAnnee;
+                    bool estIntAnnee = int.TryParse(Annee, out iAnnee);
+                    if (!estIntAnnee || iAnnee < 2024 || iAnnee > 2124)
+                    {
+                        Annee = "2024";
+                        AddError(nameof(Annee), "L'année doit être un entier. Il doit être compris entre 2024 et 2123, inclusivement.");
+                    }  
                     else
                         RemoveError(nameof(Annee));
                     break;
 
-                case nameof(Mois):
-                    if (Mois < 1 || Mois > 12)
-                        AddError(nameof(Mois), "Le mois doit être entre 1 et 12, inclusivement.");
+                case nameof(LeMois):
+                    int iLeMois;
+                    bool estIntLeMois = int.TryParse(LeMois, out iLeMois);
+                    if (!estIntLeMois || iLeMois < 1 || iLeMois > 12)
+                    {
+                        LeMois = "1";
+                        AddError(nameof(LeMois), "Le mois doit être un entier. Il doit être compris entre 1 et 12, inclusivement.");
+                    }     
                     else
-                        RemoveError(nameof(Mois));
+                        RemoveError(nameof(LeMois));
                     break;
 
             }
@@ -159,8 +172,8 @@ namespace Automate.ViewModels
             }
             // Notifier les changements des propriétés
             OnPropertyChanged(nameof(ErrorMessages));
+            OnPropertyChanged(nameof(HasLeMoisErrors));
             OnPropertyChanged(nameof(HasAnneeErrors));
-            OnPropertyChanged(nameof(HasMoisErrors));
         }
 
         private void RemoveError(string propertyName)
@@ -172,8 +185,8 @@ namespace Automate.ViewModels
             }
             // Notifier les changements des propriétés
             OnPropertyChanged(nameof(ErrorMessages));
+            OnPropertyChanged(nameof(HasLeMoisErrors));
             OnPropertyChanged(nameof(HasAnneeErrors));
-            OnPropertyChanged(nameof(HasMoisErrors));
         }
 
         public IEnumerable GetErrors(string? propertyName)

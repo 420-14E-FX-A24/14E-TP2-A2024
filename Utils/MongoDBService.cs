@@ -6,8 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Automate.Models.CalendrierPageModel;
-using static Automate.Models.CalendrierPageModel.Jour;
+using System.Windows.Media;
+using static Automate.Models.Jour;
 
 namespace Automate.Utils
 {
@@ -15,25 +15,25 @@ namespace Automate.Utils
     {
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<UserModel> _users;
-        private readonly IMongoCollection<CalendrierPageModel> _calendrierPages;
+        private readonly IMongoCollection<Jour> _jours;
 
         public MongoDBService(string databaseName)
         {
             var client = new MongoClient("mongodb://localhost:27017"); // URL du serveur MongoDB
             _database = client.GetDatabase(databaseName);
             _users = _database.GetCollection<UserModel>("Users");
-            _calendrierPages = _database.GetCollection<CalendrierPageModel>("CalendrierPages");
+            _jours = _database.GetCollection<Jour>("Jours");
             var premierUtilisateur = _users.Find(Builders<UserModel>.Filter.Empty).FirstOrDefault();
             if(premierUtilisateur is null)
             {
                 premierUtilisateur = new UserModel { Username = "Frederic", Password = ".", Role = "Admin" };
                 RegisterUser(premierUtilisateur);
             }
-            var premierCalendrierPage = _calendrierPages.Find(Builders<CalendrierPageModel>.Filter.Empty).FirstOrDefault();
-            if (premierCalendrierPage is null)
+            var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
+            if (premierJour is null)
             {
-                premierCalendrierPage = new CalendrierPageModel();
-                RegisterCalendrierPage(premierCalendrierPage);
+                premierJour = new Jour();
+                RegisterJour(premierJour);
             }
         }
 
@@ -48,20 +48,28 @@ namespace Automate.Utils
             return user;
         }
 
-        public CalendrierPageModel ConsulterCalendrierPage(int annee, int mois)
+        public List<Jour> ConsulterJourCalendrierPage(DateTime date)
         {
-            var calendrierPage = _calendrierPages.Find(u => u.Annee == annee && u.Mois == mois).FirstOrDefault();
-            return calendrierPage;
+            var Date = date;
+            int JourDuMois = date.Day;
+            var DepartJour = date.DayOfYear - JourDuMois;
+            int FinJour = DepartJour + DateTime.DaysInMonth(Date.Year, Date.Month);
+            var dateFiltre = Builders<Jour>.Filter.And(
+                Builders<Jour>.Filter.Gte(doc => doc.TimeCreated.DayOfYear, DepartJour),
+                Builders<Jour>.Filter.Lte(doc => doc.TimeCreated.DayOfYear, FinJour)
+            );
+            return _jours.Find(dateFiltre).ToList();
         }
 
         public void RegisterUser(UserModel user)
         {
+            user.TimeCreated = DateTime.UtcNow;
             _users.InsertOne(user);
         }
 
-        public void RegisterCalendrierPage(CalendrierPageModel calendrierPage)
+        public void RegisterJour(Jour jour)
         {
-            _calendrierPages.InsertOne(calendrierPage);
+            _jours.InsertOne(jour);
         }
 
     }
