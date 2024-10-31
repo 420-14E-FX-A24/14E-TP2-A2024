@@ -39,7 +39,7 @@ namespace Automate.Models
             Jours = new List<Jour>();
             for (int i = 0; i < JourDansMois; i++)
             {
-                DateTime date = new DateTime(DateAujourdhui.Year, DateAujourdhui.Month, JourDansMois);
+                DateTime date = new DateTime(DateAujourdhui.Year, DateAujourdhui.Month, i);
                 Jours.Add(new Jour(date));
             }
 
