@@ -3,9 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Automate.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Automate"
+        xmlns:utils="clr-namespace:Automate.Utils"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+        xmlns:viewmodels="clr-namespace:Automate.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:AccueilViewModel}"
         mc:Ignorable="d"
-        Title="AccueilWindow" Height="450" Width="800">
+        Title="LoginWindow" SizeToContent="WidthAndHeight" Height="auto" Width="auto"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Window.Resources>
+        <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
+
+    </Window.Resources>
     <Grid>
 
     </Grid>

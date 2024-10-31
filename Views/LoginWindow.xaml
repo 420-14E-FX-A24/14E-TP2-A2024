@@ -45,7 +45,7 @@
                      VerticalAlignment="Center"
                      Kind="HoneyFarmer"
                      Foreground="White"/>
-                    <TextBlock VerticalAlignment="Center" Text="Home" Foreground="white" FontSize="24"/>
+                    <TextBlock VerticalAlignment="Center" Text="Automate" Foreground="white" FontSize="24"/>
                 </StackPanel>
             </Grid>
         </Border>

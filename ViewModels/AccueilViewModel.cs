@@ -1,4 +1,5 @@
-﻿using Automate.Utils;
+﻿using Automate.Models;
+using Automate.Utils;
 using Automate.Views;
 using System;
 using System.Collections;
@@ -7,21 +8,27 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using static Automate.Models.CalendrierPageModel;
 
 namespace Automate.ViewModels
 {
-    public class LoginViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
+    public class AccueilViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
+      
         //Propriétés du ViewModel
-        private string? _username;
-        private string? _password;
-        private readonly MongoDBService _mongoService;
+        private int _annee;
+        private int _mois;
+     
+
+        //commandes utilisées par l'interface
+        public ICommand ConsulterCalendrierPageCommand { get; }
         private readonly NavigationService _navigationService;
-        //référence à la vue
-        private Window _window;
+        private readonly MongoDBService _mongoService;
+        private CalendrierPageModel _calendrierPage;
 
         //dictionnaire des erreurs de validation
         private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
@@ -31,46 +38,50 @@ namespace Automate.ViewModels
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
         //commandes utilisées par l'interface
-        public ICommand AuthenticateCommand { get; }
-        public ICommand PasswordChangedCommand { get; }
         public bool HasErrors => _errors.Count > 0;
-        public bool HasPasswordErrors => _errors.ContainsKey(nameof(Password)) && _errors[nameof(Password)].Any();
+        public bool HasAnneeErrors => _errors.ContainsKey(nameof(Annee)) && _errors[nameof(Annee)].Any();
+        public bool HasMoisErrors => _errors.ContainsKey(nameof(Mois)) && _errors[nameof(Mois)].Any();
+       
 
+        //référence à la vue
+        private Window _window;
         //constructeur
-        public LoginViewModel(Window openedWindow)
+        public AccueilViewModel(Window openedWindow)
         {
             //instanciation de la BD
             _mongoService = new MongoDBService("AutomateDB");
-            AuthenticateCommand = new RelayCommand(Authenticate);
+            ConsulterCalendrierPageCommand = new RelayCommand(ConsulterCalendrierPage);
             _navigationService = new NavigationService();
             _window = openedWindow;
 
         }
-
-
+       
         //propriétés
-        public string? Username
+
+        public int Annee
         {
-            get => _username;
+            get => _annee;
             set
             {
-                //quand la valeur du textbox est modifiée, on valide les données et on avertit la vue
-                _username = value;
-                OnPropertyChanged(nameof(Username));
-                ValidateProperty(nameof(Username));
+                _annee = value;
+                OnPropertyChanged(nameof(Annee));
+                ValidateProperty(nameof(Annee));
             }
         }
 
-        public string? Password
+
+        public int Mois
         {
-            get => _password;
+            get => _mois;
             set
             {
-                _password = value;
-                OnPropertyChanged(nameof(Password));
-                ValidateProperty(nameof(Password));
+                _mois = value;
+                OnPropertyChanged(nameof(Mois));
+                ValidateProperty(nameof(Mois));
             }
         }
+
+
 
         public string ErrorMessages
         {
@@ -88,33 +99,29 @@ namespace Automate.ViewModels
             }
         }
 
+
         //méthodes
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void Authenticate()
+        public void ConsulterCalendrierPage()
         {
-            ValidateProperty(nameof(Username));
-            ValidateProperty(nameof(Password));
+            ValidateProperty(nameof(Annee));
+            ValidateProperty(nameof(Mois));
 
-            if (!HasErrors)
+            var donneeCalendrierPage = _mongoService.ConsulterCalendrierPage(Annee, Mois);
+            if (donneeCalendrierPage == null)
             {
-                var user = _mongoService.Authenticate(Username, Password);
-                if (user == null)
-                {
-                    AddError("Username", "Nom d'utilisateur ou mot de passe invalide");
-                    AddError("Password", "");
-                    Trace.WriteLine("invalid");
-                }
-                else
-                {
-                    _navigationService.NavigateTo<AccueilWindow>();
-                    _navigationService.Close(_window);
-                    Trace.WriteLine("logged in");
-                }
-
+                AddError("Calendrier", "Année ou mois invalide.");
+                Trace.WriteLine("invalide");
+            }
+            else
+            {
+                _navigationService.NavigateTo<CalendrierPageWindow>();
+                _navigationService.Close(_window);
+                Trace.WriteLine($"Accéder à calendrier Annee: {Annee}, Mois: {Mois}");
             }
         }
 
@@ -122,27 +129,20 @@ namespace Automate.ViewModels
         {
             switch (propertyName)
             {
-                case nameof(Username):
-                    if (string.IsNullOrEmpty(Username))
-                    {
-                        AddError(nameof(Username), "Le nom d'utilisateur ne peut pas être vide.");
-                    }
+                case nameof(Annee):
+                    if (Annee < 2024 || Annee > 2025)
+                        AddError(nameof(Annee), "L'année doit être entre 2024 et 2025, inclusivement.");
                     else
-                    {
-                        RemoveError(nameof(Username));
-                    }
+                        RemoveError(nameof(Annee));
                     break;
 
-                case nameof(Password):
-                    if (string.IsNullOrEmpty(Password))
-                    {
-                        AddError(nameof(Password), "Le mot de passe ne peut pas être vide.");
-                    }
+                case nameof(Mois):
+                    if (Mois < 1 || Mois > 12)
+                        AddError(nameof(Mois), "Le mois doit être entre 1 et 12, inclusivement.");
                     else
-                    {
-                        RemoveError(nameof(Password));
-                    }
+                        RemoveError(nameof(Mois));
                     break;
+
             }
         }
 
@@ -155,11 +155,12 @@ namespace Automate.ViewModels
             if (!_errors[propertyName].Contains(errorMessage))
             {
                 _errors[propertyName].Add(errorMessage);
-               ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
             }
             // Notifier les changements des propriétés
             OnPropertyChanged(nameof(ErrorMessages));
-            OnPropertyChanged(nameof(HasPasswordErrors));
+            OnPropertyChanged(nameof(HasAnneeErrors));
+            OnPropertyChanged(nameof(HasMoisErrors));
         }
 
         private void RemoveError(string propertyName)
@@ -167,11 +168,12 @@ namespace Automate.ViewModels
             if (_errors.ContainsKey(propertyName))
             {
                 _errors.Remove(propertyName);
-               ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName)); 
+                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
             }
             // Notifier les changements des propriétés
             OnPropertyChanged(nameof(ErrorMessages));
-            OnPropertyChanged(nameof(HasPasswordErrors));
+            OnPropertyChanged(nameof(HasAnneeErrors));
+            OnPropertyChanged(nameof(HasMoisErrors));
         }
 
         public IEnumerable GetErrors(string? propertyName)
@@ -183,7 +185,6 @@ namespace Automate.ViewModels
 
             return _errors[propertyName];
         }
-
 
     }
 }
