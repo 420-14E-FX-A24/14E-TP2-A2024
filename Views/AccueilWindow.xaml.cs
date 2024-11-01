@@ -23,6 +23,9 @@ namespace Automate.Views
         public AccueilWindow()
         {
             InitializeComponent();
+
+            
+
             DataContext = new AccueilViewModel(this);
         }
     }

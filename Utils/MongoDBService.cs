@@ -68,11 +68,11 @@ namespace Automate.Utils
 
         public Jour ModifierJour(DateTime date)
         {
-            DateTime dateLocale = date.ToLocalTime().Date;
+            DateTime queryDate = date.ToUniversalTime().Date;
             var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
             var filter = Builders<Jour>.Filter.And(
-                Builders<Jour>.Filter.Gte(j => j.Date, dateLocale),
-                Builders<Jour>.Filter.Lt(j => j.Date, dateLocale.AddDays(1))
+                Builders<Jour>.Filter.Gte(j => j.Date, queryDate),
+                Builders<Jour>.Filter.Lt(j => j.Date, queryDate.AddDays(1))
             );
             var result = _jours.Find(filter).FirstOrDefault();
             return result;

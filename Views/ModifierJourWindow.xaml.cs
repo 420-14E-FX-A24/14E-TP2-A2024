@@ -23,7 +23,10 @@ namespace Automate.Views
         public ModifierJourWindow()
         {
             InitializeComponent();
-            DataContext = new LoginViewModel(this);
+
+            DataContext = new AccueilViewModel(this);
+
+         
         }
     }
 }

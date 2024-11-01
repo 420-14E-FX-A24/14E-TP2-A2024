@@ -46,14 +46,11 @@ namespace Automate.Models
         {
             Semis,
             Rempotage,
-            Desherbage,
-            Taille,
-            Fertilisation,
+            Entretien,
             Arrosage,
             Recolte,
             Commandes,
-            visites,
-            Evenementsspeciaux
+            Evenements
         }
 
         public Jour()
@@ -67,6 +64,17 @@ namespace Automate.Models
             Date = DateAujourdhui.ToLocalTime();
         }
 
+        public Jour(Jour jour)
+        {
+            TimeCreated = jour.Date;
+            Taches = new List<Tache>(jour.Taches);
+            CommentaireTaches = new List<string>(jour.CommentaireTaches);
+            NombreAlertes = jour.NombreAlertes;
+            Numero = jour.Numero;
+            Date = jour.Date;
+        }
+
+
         public Jour(DateTime date)
         {
             DateTime DateAujourdhui = DateTime.Now;
@@ -78,7 +86,7 @@ namespace Automate.Models
             Date = date.ToLocalTime();
         }
 
-        public Jour(List<Tache> taches, List<string> commentairesTaches, int numero, DateTime date)
+        public Jour(List<Tache> taches, List<string> commentairesTaches, DateTime date)
         {
             DateTime DateAujourdhui = DateTime.Now;
             TimeCreated = DateAujourdhui;
@@ -90,7 +98,7 @@ namespace Automate.Models
                 return numeroTache == 1 || numeroTache == 6;
             });
             NombreAlertes = traitementTacheAlertes.Count;
-            Numero = numero;
+            Numero = date.Day;
             Date = date.ToLocalTime();
         }
 
