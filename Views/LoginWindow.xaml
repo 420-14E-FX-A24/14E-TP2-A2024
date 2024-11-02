@@ -60,8 +60,9 @@
                            Margin="5" 
                            HorizontalAlignment="Center"/>
                     <TextBox x:Name="UsernameTextBox"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
-                             Width="200" Height="30" 
+                             Width="200" Height="50" 
                              Margin="25"
                              materialDesign:HintAssist.Hint="Kev"/>
                     <Border BorderThickness="2.5"

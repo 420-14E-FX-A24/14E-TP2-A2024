@@ -16,11 +16,6 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <Window.Resources>
         <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
-        <Style x:Key="MaterialDesignCardsListBox" TargetType="ListBox">
-            <!-- Your ListBox style setters and triggers -->
-        </Style>
-
-        <!-- Define a separate ListBoxItem style -->
         <Style x:Key="CustomListBoxItemStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignCardsListBox}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -41,6 +36,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -50,7 +46,11 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
-
+        <materialDesign:DialogHost Identifier="ModifierJourDialog" Grid.Column="0" Grid.Row="1">
+            <materialDesign:DialogHost.DialogContent>
+                <local:ConfirmationDialog />
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
         <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}" HorizontalAlignment="Stretch" Grid.ColumnSpan="6">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -156,7 +156,7 @@
                                      HorizontalAlignment="Left"      
                                      materialDesign:HintAssist.Hint="Taches" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                     SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" 
+                                     SelectedIndex="{Binding SelectionIndexTache, Mode=TwoWay}" 
                                      ItemsSource="{Binding EnumValues}"/>
 
 

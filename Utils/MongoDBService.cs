@@ -90,6 +90,12 @@ namespace Automate.Utils
             _jours.InsertOne(jour);
         }
 
+        public void EnregistrerJour(Jour jour)
+        {
+            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+            _jours.ReplaceOne(filter, jour);
+        }
+
     }
 
 }

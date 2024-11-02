@@ -2,12 +2,14 @@
 using Automate.Models;
 using Automate.Utils;
 using Automate.Views;
+using MaterialDesignThemes.Wpf;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -20,6 +22,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using static Automate.Models.Jour;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
@@ -31,7 +34,7 @@ namespace Automate.ViewModels
     {
 
         //Propriétés du ViewModel
-        private int _selectedIndex;
+        private int _selectedTache;
         private ObservableCollection<string> _tests;
         private ObservableCollection<Jour> _jourObservableSelection;
         private ObservableCollection<Jour> _jourObservableSelectionTempo;
@@ -48,7 +51,8 @@ namespace Automate.ViewModels
         public IEnumerable<Tache> EnumValues => Enum.GetValues(typeof(Tache)).Cast<Tache>();
         private Jour _jour;
         private string? _tache;
-        private string? _commentaire;
+        private string _commentaire;
+        private int _selectionIndexTache;
         private int _selectionTache;
         private int _selectionCommentaire;
 
@@ -62,7 +66,8 @@ namespace Automate.ViewModels
         public ICommand ConsulterJourCalendrierPageCommand { get; }
         public ICommand ModifierJourCommand { get; }
 
-
+        public ICommand FermerDialogCommand { get; }
+        public RelayCommand AfficherDialogCommand { get; }
 
         //Gestionnaires d'événements 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -82,9 +87,18 @@ namespace Automate.ViewModels
             _mongoService = new MongoDBService("AutomateDB");
             ConsulterJourCalendrierPageCommand = new RelayCommand(ConsulterJourCalendrierPage);
             ModifierJourCommand = new RelayCommand(ModifierJour);
+            AjouterTacheCommand = new RelayCommand(AjouterTache);
+            RetirerTacheCommand = new RelayCommand(RetirerTache);
+            AjouterCommentaireCommand = new RelayCommand(AjouterCommentaire);
+            RetirerCommentaireCommand = new RelayCommand(RetirerCommentaire);
+            EnregistrerJourCommand = new RelayCommand(EnregistrerJour);
+            RetournerAccueilCommand = new RelayCommand(RetournerAccueil);
+            AfficherDialogCommand = new RelayCommand(AfficherDialog);
+            FermerDialogCommand = new RelayCommand(FermerDialog);
             _navigationService = new NavigationService();
             _window = openedWindow;
             DateSelection = DateTime.Now;
+            _commentaire = "";
             //Créer une légende à partir de toute la collection.
             TextBlock TextBlock = (TextBlock)_window.FindName("FeedbackAjouterCommentaire");
             if (TextBlock is not null)
@@ -138,7 +152,15 @@ namespace Automate.ViewModels
             }
         }
 
-
+        public int SelectionIndexTache
+        {
+            get => _selectionIndexTache;
+            set
+            {
+                _selectionIndexTache = value;
+                OnPropertyChanged(nameof(SelectionIndexTache));
+            }
+        }
 
 
         public ObservableCollection<Jour> JourObservableSelection
@@ -195,7 +217,7 @@ namespace Automate.ViewModels
             }
         }
 
-        public string? Commentaire
+        public string Commentaire
         {
             get => _commentaire;
             set
@@ -233,24 +255,6 @@ namespace Automate.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-        public void AjouterCommentaire()
-        {
-            if (!string.IsNullOrEmpty(Commentaire))
-            {
-                JourObservableSelection[0].CommentaireTaches.Add(Commentaire);
-                ObservableCollection<Jour> tempos = new ObservableCollection<Jour>(JourObservableSelection);
-                JourObservableSelection.Clear();
-                JourObservableSelection = new ObservableCollection<Jour>(tempos);
-                Commentaire = string.Empty;
-                AjouterStyleErreur(false, false);
-                OnPropertyChanged(nameof(Commentaire));
-            }
-            else
-                AjouterStyleErreur(true, true, "Choisir une tâche.");
-
         }
 
 
@@ -323,44 +327,82 @@ namespace Automate.ViewModels
             }
         }
 
+        public void AjouterCommentaire()
+        {
+            if (!string.IsNullOrEmpty(Commentaire))
+            {
+                int index = SelectionCommentaire;
+                JourObservableSelection[0].CommentaireTaches.Add(Commentaire);
+                ObservableCollection<Jour> tempos = new ObservableCollection<Jour>(JourObservableSelection);
+                JourObservableSelection.Clear();
+                JourObservableSelection = new ObservableCollection<Jour>(tempos);
+                OnPropertyChanged(nameof(JourObservableSelection));
+                SelectionCommentaire = index;
+                OnPropertyChanged(nameof(SelectionCommentaire));
+                AjouterStyleErreur(false, false, "");
+            }
+            else
+                AjouterStyleErreur(true, true, "Le commentaire ne peut pas être vide.");
+
+        }
 
         public void RetirerCommentaire()
         {
-            _jourObservableSelection[0].CommentaireTaches.Remove(Commentaire);
-            OnPropertyChanged(nameof(JourObservableSelection));
+            int index = SelectionCommentaire;
+            if (SelectionCommentaire >= 0)
+            {
+                _jourObservableSelection[0].CommentaireTaches.RemoveAt(index);
+                ObservableCollection<Jour> tempos = new ObservableCollection<Jour>(JourObservableSelection);
+                JourObservableSelection.Clear();
+                JourObservableSelection = new ObservableCollection<Jour>(tempos);
+                OnPropertyChanged(nameof(JourObservableSelection));
+                int nombre = JourObservableSelection[0].CommentaireTaches.Count;
+                if (index == 0 && nombre > 0)
+                    SelectionCommentaire = index;
+                else
+                    SelectionCommentaire = -1;
+                OnPropertyChanged(nameof(SelectionCommentaire));
+            } 
         }
 
 
         public void AjouterTache()
         {
-            if (Enum.TryParse(typeof(Tache), Tache, out var result))
-            {
-                Tache tacheChoisie = (Tache)result;
-                JourObservableSelection[0].Taches.Add(tacheChoisie);
-                ObservableCollection<Jour> tempos = new ObservableCollection<Jour>(JourObservableSelection);
-                JourObservableSelection.Clear();
-                JourObservableSelection = new ObservableCollection<Jour>(tempos);
-                AjouterStyleErreur(true, false);
-            }
-            else
-                AjouterStyleErreur(true, true, "Le commentaire doir avoir au moins un caractère.");
-
-
+            int index = SelectionTache;
+            JourObservableSelection[0].Taches.Add((Jour.Tache)SelectionIndexTache);
+            ObservableCollection<Jour> tempos = new ObservableCollection<Jour>(JourObservableSelection);
+            JourObservableSelection.Clear();
+            JourObservableSelection = new ObservableCollection<Jour>(tempos);
+            OnPropertyChanged(nameof(JourObservableSelection));
+            SelectionTache = index;
+            OnPropertyChanged(nameof(SelectionTache));
         }
 
 
         public void RetirerTache()
         {
-
-            Tache tacheChoisie = (Tache)Enum.Parse(typeof(Tache), Tache);
-            _jourObservableSelection[0].Taches.Remove(tacheChoisie);
-            OnPropertyChanged(nameof(JourObservableSelection));
+            int index = SelectionTache;
+            if (index >= 0)
+            {
+                _jourObservableSelection[0].Taches.RemoveAt(index);
+                ObservableCollection<Jour> tempos = new ObservableCollection<Jour>(JourObservableSelection);
+                JourObservableSelection.Clear();
+                JourObservableSelection = new ObservableCollection<Jour>(tempos);
+                OnPropertyChanged(nameof(JourObservableSelection));
+                int nombre = JourObservableSelection[0].Taches.Count;
+                if (index == 0 && nombre > 0)
+                    SelectionTache = index;
+                else
+                    SelectionTache = -1;
+                OnPropertyChanged(nameof(SelectionTache));
+            }
         }
 
 
         public void EnregistrerJour()
         {
-
+            _mongoService.EnregistrerJour(JourObservableSelection[0]);
+            AfficherDialog();
         }
 
 
@@ -385,11 +427,9 @@ namespace Automate.ViewModels
             OnPropertyChanged(nameof(Commentaires));
             Tache = "Semis";
             SelectionTache = 0;
+            SelectionIndexTache = 0;
             SelectionCommentaire = 0;
         }
-
-
-
 
 
         public void ConsulterJourCalendrierPage()
@@ -405,23 +445,25 @@ namespace Automate.ViewModels
         }
 
 
-
- 
-
-
         public void ModifierJour()
         {
-           
-
-                // Navigate to the new window
                 _navigationService.NavigateTo<ModifierJourWindow>(_window.DataContext);
                 _navigationService.Close(_window);
-                Trace.WriteLine("Naviguer vers modifier un jour.");
-            
+                Trace.WriteLine("Naviguer vers modifier un jour."); 
         }
 
 
+        private async void AfficherDialog()
+        {
+            var dialogContent = new ConfirmationDialog(); // Replace with your actual dialog content
+            await DialogHost.Show(dialogContent, "ModifierJourDialog");
+        }
 
-      
+        private void FermerDialog()
+        {
+            DialogHost.Close("ModifierJourDialog", null);
+        }
+
+   
     }
 }
