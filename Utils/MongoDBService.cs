@@ -51,19 +51,20 @@ namespace Automate.Utils
 
         public List<Jour> ConsulterJourCalendrierPage(DateTime date)
         {
-            int JourDuMois = date.Day;
-            int DepartJour = date.DayOfYear - JourDuMois;
-            int FinJour = DepartJour + DateTime.DaysInMonth(date.Year, date.Month);
+            
+            DateTime DepartJour = new DateTime(date.Year, date.Month, 1);
+            DateTime FinJour = DepartJour.AddMonths(1).AddDays(-1);
+
+            int PremierJourAnnee = DepartJour.DayOfYear;
+            int DernierJourAnnee = FinJour.DayOfYear;
 
             var filter = new BsonDocument("$expr", new BsonDocument("$and", new BsonArray
             {
-                new BsonDocument("$gte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), DepartJour }),
-                new BsonDocument("$lte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), FinJour })
+                new BsonDocument("$gte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), PremierJourAnnee }),
+                new BsonDocument("$lte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), DernierJourAnnee })
             }));
 
-            return _jours.Find(filter).ToList();
-
-            
+            return _jours.Find(filter).ToList();  
         }
 
         public Jour ModifierJour(DateTime date)

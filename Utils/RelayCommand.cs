@@ -54,4 +54,5 @@ public class RelayCommand : ICommand
     {
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
+
 }

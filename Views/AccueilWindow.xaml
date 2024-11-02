@@ -12,10 +12,39 @@
         Title="LoginWindow" SizeToContent="WidthAndHeight" Height="auto" Width="auto"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <Window.Resources>
         <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <Style x:Key="MaterialDesignCardsListView" TargetType="ListView">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
 
+        <Style x:Key="CustomListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="LightBlue"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -53,16 +82,22 @@
         <materialDesign:Card Margin="25" Padding="16" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Horizontal">
-
                     <StackPanel VerticalAlignment="Top">
                         <TextBlock Margin="0,10,0,0" Text="Consulter le calendrier." FontSize="24" HorizontalAlignment="Left"/>
                         <Calendar x:Name="CalendrierAutomate" 
                               VerticalAlignment="Center" 
                               HorizontalAlignment="Center"
                               SelectedDate="{Binding DateSelection}" 
-                               Margin="0,10,0,0"
-                             />
-                        <Button Content="Modifier" 
+                              Margin="0,10,0,0">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectedDatesChanged">
+                                    <i:InvokeCommandAction Command="{Binding ConsulterJourCalendrierPageCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Calendar>
+                        <Button
+                        x:Name="ModifierButton"
+                        Content="Modifier" 
                         Width="145" 
                         Height="43" 
                         Margin="25" 
@@ -71,7 +106,12 @@
                         HorizontalAlignment="Center" RenderTransformOrigin="0.509,1.411"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
-                        <ListView ItemsSource="{Binding JourObservableSelection, UpdateSourceTrigger=PropertyChanged}">
+                        <ListView 
+                            Style="{StaticResource MaterialDesignCardsListView}" 
+                            ItemContainerStyle="{StaticResource CustomListViewItemStyle}"
+                            x:Name="lvJours"
+                            ItemsSource="{Binding JourObservableSelection, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedIndex="{Binding SelectionIndexJour, Mode=TwoWay}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Jour">

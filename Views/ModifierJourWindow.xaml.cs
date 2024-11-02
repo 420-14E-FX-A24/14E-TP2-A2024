@@ -23,9 +23,6 @@ namespace Automate.Views
         public ModifierJourWindow()
         {
             InitializeComponent();
-
-            DataContext = new AccueilViewModel(this);
-
          
         }
     }
