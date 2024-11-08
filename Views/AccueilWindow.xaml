@@ -84,7 +84,9 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel VerticalAlignment="Top">
                         <TextBlock Margin="0,10,0,0" Text="Consulter le calendrier." FontSize="24" HorizontalAlignment="Left"/>
-                        <Calendar x:Name="CalendrierAutomate" 
+                        <Calendar 
+                              Language="fr-FR"
+                              x:Name="CalendrierAutomate" 
                               VerticalAlignment="Center" 
                               HorizontalAlignment="Center"
                               SelectedDate="{Binding DateSelection}" 
@@ -117,7 +119,7 @@
                                     <GridViewColumn Header="Jour">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Border VerticalAlignment="Center" Width="100" Height="50">
+                                                <Border VerticalAlignment="Center" Width="100" Height="50" Padding="15">
                                                     <TextBlock Text="{Binding Numero}" VerticalAlignment="Center"/>
                                                 </Border>
                                             </DataTemplate>
@@ -126,7 +128,7 @@
                                     <GridViewColumn Header="Alertes">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Border VerticalAlignment="Center" Width="100" Height="50">
+                                                <Border VerticalAlignment="Center" Width="100" Height="50" >
                                                     <TextBlock Text="{Binding NombreAlertes}" VerticalAlignment="Center"/>
                                                 </Border>
                                             </DataTemplate>
@@ -138,7 +140,9 @@
                                                 <ItemsControl ItemsSource="{Binding Taches}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding}" />
+                                                            <Border Padding="5">
+                                                                <TextBlock Text="{Binding}" />
+                                                            </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
@@ -152,7 +156,9 @@
                                                 <ItemsControl ItemsSource="{Binding CommentaireTaches}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding}" />
+                                                            <Border Padding="5">
+                                                                <TextBlock Text="{Binding}" />
+                                                            </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>

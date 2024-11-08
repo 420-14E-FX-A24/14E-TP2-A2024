@@ -13,7 +13,8 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        x:Name="ModifierJourWindowLaVue">
     <Window.Resources>
         <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <Style x:Key="CustomListBoxItemStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignCardsListBox}">
@@ -51,7 +52,7 @@
                 <local:ConfirmationDialog />
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
-        <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}" HorizontalAlignment="Stretch" Grid.ColumnSpan="6">
+        <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}" HorizontalAlignment="Stretch" Width="auto" Grid.ColumnSpan="6">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
@@ -74,36 +75,34 @@
             </Grid>
         </Border>
 
-        <materialDesign:Card Padding="19" Margin="0 20 0 0" Grid.Row="1" Width="800">
+        <materialDesign:Card Padding="19" Margin="0, 20, 0, 20" Grid.Row="1" HorizontalAlignment="Stretch" MaxWidth="840">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <StackPanel>
+                <StackPanel HorizontalAlignment="Stretch">
                         
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="395" />
-                                <ColumnDefinition Width="160" />
-                            <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            
+
+
+                        <TextBlock Grid.Column="0" Grid.Row="0" Margin="16 16 12 8" FontSize="16" >Personnaliser.</TextBlock>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                            <Button
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Content="Fermer" 
+                            Width="145" 
+                            Height="42" 
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Command="{Binding RetournerAccueilCommand}" RenderTransformOrigin="0.509,1.411" Margin="10,0,0,0"/>
+                        </StackPanel>
                         
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="16 16 12 8" FontSize="16" >Personnaliser.</TextBlock>
-                        <Button
-                        Grid.Row="0" Grid.Column="1"
-                        Content="Enregistrer" 
-                        Width="145" 
-                        Height="42" 
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        Command="{Binding EnregistrerJourCommand}" RenderTransformOrigin="0.509,1.411" Margin="10,0,0,0"/>
-                        <Button
-                        Grid.Row="0" Grid.Column="2"
-                        Content="Fermer" 
-                        Width="145" 
-                        Height="42" 
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        Command="{Binding RetournerAccueilCommand}" RenderTransformOrigin="0.509,1.411" Margin="10,0,0,0"/>
                     </Grid>
                     
                     <Separator Style="{StaticResource MaterialDesignLightSeparator}" Background="LightGray" />
@@ -120,12 +119,12 @@
                             <RowDefinition Height="50" />
                             <RowDefinition Height="300" />
                         </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" >
-                            <Label Margin="10,0,0,0" Height="50" Width="525" VerticalContentAlignment="Center"  Style="{StaticResource MaterialDesignLabel}" >Date</Label>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" MaxWidth="840">
+                            <Label Margin="15,0,0,0" Height="50" Width="525" VerticalContentAlignment="Center"  Style="{StaticResource MaterialDesignLabel}" >Date</Label>
                             <TextBlock  Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{Binding JourObservableSelection[0].Date, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
-                        <StackPanel Height="50" Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="auto">
+                        <StackPanel Height="50" Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" MaxWidth="840">
                             <TextBlock
                                 Text="Ajouter des taches." 
                                 Margin="-10,0,10,0"
@@ -144,8 +143,8 @@
                             </Border>
                             
                         </StackPanel>
-
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0">
+                       
+                            <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" MaxWidth="840">
 
                             <Border VerticalAlignment="Center"  Height="50" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="1" CornerRadius="5,5,0,0">
                                 <StackPanel Orientation="Horizontal">
@@ -160,7 +159,7 @@
                                      ItemsSource="{Binding EnumValues}"/>
 
 
-                                    <Border HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="545"  BorderBrush="Black" BorderThickness="1,0,0,0" Padding="5,0,0,0" Margin="10,0,0,0" CornerRadius="0,0,0,0">
+                                    <Border HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" MinWidth="610"  BorderBrush="Black" BorderThickness="1,0,0,0" Padding="5,0,0,0" Margin="10,0,0,0" CornerRadius="0,0,0,0">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <Button
                                             HorizontalAlignment="Right"
@@ -170,6 +169,15 @@
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             Command="{Binding AjouterTacheCommand}" RenderTransformOrigin="0.509,1.411" 
                                             Margin="10,0,10,0"/>
+                                            <Button
+                                            HorizontalAlignment="Right"
+                                            Width="50" 
+                                            Height="42" 
+                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                            Command="{Binding ModifierTacheCommand}" RenderTransformOrigin="0.509,1.411" 
+                                            Margin="10,0,10,0">
+                                                <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Update" Width="48" Height="20" Foreground="white"/>
+                                            </Button>
                                             <Button
                                             HorizontalAlignment="Right"
                                             Content="-" 
@@ -183,9 +191,9 @@
                                 </StackPanel>
                             </Border>
                             <Border HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="1" Background="Aqua" Padding="15" CornerRadius="0,0,5,5">
-                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Height="200">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200">
                                     <StackPanel Orientation="Horizontal">
-                                        <ListBox Name="lb_taches" VerticalAlignment="Top" Width="640"
+                                        <ListBox Name="lb_taches" VerticalAlignment="Top" Width="740"
                                         Style="{StaticResource MaterialDesignCardsListBox}" 
                                         ItemsSource="{Binding JourObservableSelection[0].Taches, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedIndex="{Binding SelectionTache, Mode=TwoWay}">
@@ -193,7 +201,7 @@
                                             <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                     <materialDesign:Card>
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="620">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="740">
                                                             <TextBlock Text="{Binding}" Padding="5"  Height="50" TextAlignment="Center" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                     </materialDesign:Card>
@@ -249,6 +257,15 @@
                                                 Margin="10,0,10,0"/>
                                                 <Button
                                                 HorizontalAlignment="Right"
+                                                Width="50" 
+                                                Height="42" 
+                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Command="{Binding ModifierCommentaireCommand}" RenderTransformOrigin="0.509,1.411" 
+                                                Margin="10,0,10,0">
+                                                 <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Update" Width="48" Height="20" Foreground="white"/>
+                                                 </Button>   
+                                                <Button
+                                                HorizontalAlignment="Right"
                                                 Content="-" 
                                                 Width="50" 
                                                 Height="42" 
@@ -261,9 +278,9 @@
                                 </StackPanel>
                             </Border>
                             <Border HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="1" Background="Aqua" Padding="15" CornerRadius="0,0,5,5">
-                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  Height="200">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxWidth="740"  Height="200">
                                     <StackPanel Orientation="Horizontal" >
-                                        <ListBox Name="lb_commentaires" VerticalAlignment="Top" Width="640"  
+                                        <ListBox Name="lb_commentaires" VerticalAlignment="Top" Width="740" 
                                             Style="{StaticResource MaterialDesignCardsListBox}" 
                                             ItemsSource="{Binding JourObservableSelection[0].CommentaireTaches, UpdateSourceTrigger=PropertyChanged}"
                                             SelectedIndex="{Binding SelectionCommentaire, Mode=TwoWay}">
@@ -271,7 +288,7 @@
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <materialDesign:Card>
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="620">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="740">
                                                             <TextBlock Text="{Binding}" Padding="5"  Height="50" TextAlignment="Center" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                     </materialDesign:Card>

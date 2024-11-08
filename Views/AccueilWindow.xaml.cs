@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Automate.ViewModels.AccueilViewModel;
 
 namespace Automate.Views
 {
@@ -23,9 +24,6 @@ namespace Automate.Views
         public AccueilWindow()
         {
             InitializeComponent();
-
-            
-
             DataContext = new AccueilViewModel(this);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Automate.Models;
+using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -7,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 using static Automate.Models.Jour;
 
@@ -90,10 +92,47 @@ namespace Automate.Utils
             _jours.InsertOne(jour);
         }
 
-        public void EnregistrerJour(Jour jour)
+
+
+        public void EnregistrerModificationTache(Tache tache, int index, Jour jour)
         {
             var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            _jours.ReplaceOne(filter, jour);
+            var update = Builders<Jour>.Update.Set(j => j.Taches[index], tache);
+            _jours.UpdateOne(filter, update);
+        }
+        public void EnregistrerModificationCommentaire(string commentaire, int index, Jour jour)
+        {
+            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+            var update = Builders<Jour>.Update.Set(j => j.CommentaireTaches[index], commentaire);
+            _jours.UpdateOne(filter, update);
+        }
+
+        public void EnregistrerAjoutTache(Tache tache, Jour jour)
+        {
+            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+            var update = Builders<Jour>.Update.Push(j => j.Taches, tache);
+            _jours.UpdateOne(filter, update);
+        }
+
+        public void EnregistrerAjoutCommentaire(string commentaire, Jour jour)
+        {
+            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+            var update = Builders<Jour>.Update.Push(j => j.CommentaireTaches, commentaire);
+            _jours.UpdateOne(filter, update);
+        }
+
+        public void EnregistrerRetraitTache(Tache tache, Jour jour)
+        {
+            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+            var update = Builders<Jour>.Update.Pull(j => j.Taches, tache);
+            _jours.UpdateOne(filter, update);
+        }
+
+        public void EnregistrerRetraitCommentaire(string commentaire, Jour jour)
+        {
+            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+            var update = Builders<Jour>.Update.Pull(j => j.CommentaireTaches, commentaire);
+            _jours.UpdateOne(filter, update);
         }
 
     }
