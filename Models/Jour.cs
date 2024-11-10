@@ -12,8 +12,17 @@ using Microsoft.VisualBasic;
 
 namespace Automate.Models
 {
-
-    public class Jour
+	// Personellement, j'appellerais le model Tache. Avec Id, Date, Type(enum), Comment, CreatedAt, UpdatedAt
+    //
+	// Si on veut être plus précis on pourrait même les afficher avec une heure.
+	// Et les ajouter avec une heure aussi. (Ca change rien pour la bd, parce que c'est du DateTime)
+	//
+	// Il faut rester concis avec la langue des variables, soit tout anglais ou tout francais, pas de mélange
+	//
+	// Quand on clique sur une date ca affiche les tâches.
+	//
+	// J'afficherais les tâches en ordre décroissant selon la date d'ajout ou de modification.
+	public class Jour
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -37,7 +46,7 @@ namespace Automate.Models
         public int NombreAlertes { get; set; }
 
         [BsonElement("Numero")]
-        public int Numero {  get; set; }
+        public int Numero {  get; set; } // Que représente numéro ?
 
         [BsonElement("Date")]
         public DateTime Date { get; set; }

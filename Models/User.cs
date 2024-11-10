@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Automate.Models
 {
-    public class UserModel
+    public class User
     {
         internal DateTime TimeUpdated;
 
@@ -16,13 +16,13 @@ namespace Automate.Models
         public ObjectId Id { get; set; }
 
         [BsonElement("Username")]
-        public string? Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [BsonElement("Password")]
-        public string? Password { get; set; }
+        public string PasswordHash { get; set; } = string.Empty;
 
         [BsonElement("Role")]
-        public string? Role { get; set; }
+        public string Role { get; set; } = string.Empty; // Enum ?
         public DateTime TimeCreated { get; internal set; }
     }
 }

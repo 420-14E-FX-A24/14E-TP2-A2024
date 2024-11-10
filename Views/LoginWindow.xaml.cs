@@ -32,7 +32,7 @@ namespace Automate
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PasswordBox? passwordBox = sender as PasswordBox;
-            if (DataContext is LoginViewModel viewModel)
+            if (DataContext is LoginViewModel viewModel && passwordBox is not null)
             {
                 viewModel.Password = passwordBox.Password; // Met à jour la propriété Password dans le ViewModel
             }
