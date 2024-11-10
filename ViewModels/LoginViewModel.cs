@@ -110,6 +110,7 @@ namespace Automate.ViewModels
                 }
                 else
                 {
+                   //donner la valeur du role à IWindowService 
                     _navigationService.NavigateTo<AccueilWindow>();
                     _navigationService.Close(_window);
                     Trace.WriteLine("logged in");

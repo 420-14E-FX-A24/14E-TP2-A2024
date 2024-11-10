@@ -26,11 +26,17 @@ namespace Automate.Utils
             _database = client.GetDatabase(databaseName);
             _users = _database.GetCollection<UserModel>("Users");
             _jours = _database.GetCollection<Jour>("Jours");
-            var premierUtilisateur = _users.Find(Builders<UserModel>.Filter.Empty).FirstOrDefault();
-            if(premierUtilisateur is null)
+            var user = FindUserRoleFirstOrDefault("User");
+            var admin = FindUserRoleFirstOrDefault("Admin");
+            if(user is null)
             {
-                premierUtilisateur = new UserModel { Username = "Frederic", Password = ".", Role = "Admin" };
-                RegisterUser(premierUtilisateur);
+                user = new UserModel { Username = "Andre", Password = ".", Role = "User" };
+                RegisterUser(user);
+            }
+            if (admin is null)
+            {
+                admin = new UserModel { Username = "Frederic", Password = ".", Role = "Admin" };
+                RegisterUser(admin);
             }
             var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
             if (premierJour is null)
@@ -38,6 +44,12 @@ namespace Automate.Utils
                 premierJour = new Jour();
                 RegisterJour(premierJour);
             }
+        }
+
+        public UserModel FindUserRoleFirstOrDefault(string role)
+        {
+            var filter = Builders<UserModel>.Filter.Eq(user => user.Role, role);
+            return _users.Find(filter).FirstOrDefault();
         }
 
         public IMongoCollection<T> GetCollection<T>(string collectionName) 

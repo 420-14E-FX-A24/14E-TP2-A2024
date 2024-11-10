@@ -1,33 +1,21 @@
-﻿using Amazon.Runtime.Internal.Util;
+﻿using Automate.Utils;
 using Automate.Models;
-using Automate.Utils;
 using Automate.Views;
 using MaterialDesignThemes.Wpf;
-using Microsoft.VisualBasic;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using static Automate.Models.Jour;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
-using static System.Net.Mime.MediaTypeNames;
+using Automate.Interfaces;
+
 
 namespace Automate.ViewModels
 {
@@ -74,19 +62,34 @@ namespace Automate.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         //référence à la vue
-        private Window _window;
-        private IWindowService _windowService;
+        private Window _window { get; set; }
+        
         //constructeur
 
 
         private readonly NavigationService _navigationService;
         private readonly MongoDBService _mongoService;
 
+        private static IWindowService _windowService;
         //constructeur
         public AccueilViewModel(Window openedWindow)
         {
             //instanciation de la BD
             _mongoService = new MongoDBService("AutomateDB");
+            //instanciation du service de partgage de données.
+            try
+            {
+                if (_windowService == null)
+                {
+                    _windowService = WindowServiceWrapper.GetInstance(this); 
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString()); // This will print the stack trace to the Output window
+            }
+            if (DateSelection == DateTime.MinValue)
+                DateSelection = DateTime.Now;
             ConsulterJourCalendrierPageCommand = new RelayCommand(ConsulterJourCalendrierPage);
             ModifierJourCommand = new RelayCommand(ModifierJour);
             AjouterTacheCommand = new RelayCommand(AjouterTache);
@@ -99,10 +102,10 @@ namespace Automate.ViewModels
             AfficherDialogCommand = new RelayCommand(AfficherDialog);
             FermerDialogCommand = new RelayCommand(FermerDialog);
             _navigationService = new NavigationService();
-            _window = openedWindow;
+            Window = openedWindow;
             _commentaire = "";
             //Créer une légende à partir de toute la collection.
-            TextBlock TextBlock = (TextBlock)_window.FindName("FeedbackAjouterCommentaire");
+            TextBlock TextBlock = (TextBlock)Window.FindName("FeedbackAjouterCommentaire");
             if (TextBlock is not null)
             {
                 ObtenirJour();
@@ -111,14 +114,29 @@ namespace Automate.ViewModels
             else
             {
                 ConsulterJourCalendrierPage();
+                DateSelection = _windowService.DateSelection;
             }
                 
         }
 
+        public Window Window
+        {
+            get => _window;
+            set
+            {
+                if (_window != value)
+                {
+                    _window = value;
+                }
+            }
+        }
+
+
+
         public void SetWindowService(IWindowService windowService)
         {
             _windowService = windowService;
-            this.DateSelection = _windowService.DateSelection;
+            DateSelection = _windowService.DateSelection;
         }
 
 
@@ -282,9 +300,9 @@ namespace Automate.ViewModels
 
             if (type)
             {
-                ComboBox CbxTaches = (ComboBox)_window.FindName("CbxTaches");
-                TextBlock = (TextBlock)_window.FindName("FeedbackAjouterTache");
-                Border = (Border)_window.FindName("BorderTache");
+                ComboBox CbxTaches = (ComboBox)Window.FindName("CbxTaches");
+                TextBlock = (TextBlock)Window.FindName("FeedbackAjouterTache");
+                Border = (Border)Window.FindName("BorderTache");
 
                 if (CbxTaches != null && TextBlock != null && Border != null)
                 {
@@ -306,8 +324,8 @@ namespace Automate.ViewModels
             }
             else
             {
-                TextBlock = (TextBlock)_window.FindName("FeedbackAjouterCommentaire");
-                Border = (Border)_window.FindName("BorderCommentaire");
+                TextBlock = (TextBlock)Window.FindName("FeedbackAjouterCommentaire");
+                Border = (Border)Window.FindName("BorderCommentaire");
 
                 if (TextBlock != null && Border != null)
                 {
@@ -479,7 +497,7 @@ namespace Automate.ViewModels
                 }
             }
             if(_windowService is not null)
-                _windowService.Close();
+                Trace.WriteLine($"_windowService is not null, {_windowService is not null}");
             Trace.WriteLine("Naviguer vers accueil.");
         }
 
@@ -521,8 +539,8 @@ namespace Automate.ViewModels
         {
             if(_windowService is not null)
                 _windowService.DateSelection = DateSelection;
-            _navigationService.NavigateTo<ModifierJourWindow>(_window.DataContext);
-            _navigationService.Close(_window);
+            _navigationService.NavigateTo<ModifierJourWindow>(Window.DataContext);
+            _navigationService.Close(Window);
 
             Trace.WriteLine("Naviguer vers modifier un jour."); 
         }
@@ -555,12 +573,6 @@ namespace Automate.ViewModels
             else
                 selecteur = -1;
             OnPropertyChanged(nameof(selecteur));
-        }
-
-        public interface IWindowService
-        {
-            DateTime DateSelection { get; set; }
-            void Close();
         }
 
     }
