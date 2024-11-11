@@ -17,7 +17,7 @@
         x:Name="ModifierJourWindowLaVue">
     <Window.Resources>
         <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
-        <Style x:Key="CustomListBoxItemStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignCardsListBox}">
+        <Style x:Key="CustomListBoxItemStyle" TargetType="ListBox" BasedOn="{StaticResource MaterialDesignListBox}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -47,11 +47,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
-        <materialDesign:DialogHost Identifier="ModifierJourDialog" Grid.Column="0" Grid.Row="1">
-            <materialDesign:DialogHost.DialogContent>
-                <local:ConfirmationDialog />
-            </materialDesign:DialogHost.DialogContent>
-        </materialDesign:DialogHost>
+        
         <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}" HorizontalAlignment="Stretch" Width="auto" Grid.ColumnSpan="6">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -121,7 +117,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" MaxWidth="840">
                             <Label Margin="15,0,0,0" Height="50" Width="525" VerticalContentAlignment="Center"  Style="{StaticResource MaterialDesignLabel}" >Date</Label>
-                            <TextBlock  Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{Binding JourObservableSelection[0].Date, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock  Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{Binding JourObservableSelection[0].Date, StringFormat='{}{0:yyyy-MM-dd}'}" />
                         </StackPanel>
 
                         <StackPanel Height="50" Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" MaxWidth="840">
@@ -281,9 +277,10 @@
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" MaxWidth="740"  Height="200">
                                     <StackPanel Orientation="Horizontal" >
                                         <ListBox Name="lb_commentaires" VerticalAlignment="Top" Width="740" 
-                                            Style="{StaticResource MaterialDesignCardsListBox}" 
+                                            Style="{StaticResource CustomListBoxItemStyle}" 
                                             ItemsSource="{Binding JourObservableSelection[0].CommentaireTaches, UpdateSourceTrigger=PropertyChanged}"
-                                            SelectedIndex="{Binding SelectionCommentaire, Mode=TwoWay}">
+                                            SelectedIndex="{Binding SelectionCommentaire, Mode=TwoWay}"
+                                            >
                                            
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>

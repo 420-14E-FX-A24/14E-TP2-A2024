@@ -1,4 +1,5 @@
-﻿using Automate.Utils;
+﻿using Automate.Interfaces;
+using Automate.Utils;
 using Automate.Views;
 using System;
 using System.Collections;
@@ -20,6 +21,7 @@ namespace Automate.ViewModels
         private string? _password;
         private readonly MongoDBService _mongoService;
         private readonly NavigationService _navigationService;
+        private static IWindowService _windowService;
         //référence à la vue
         private Window _window;
 
@@ -110,8 +112,7 @@ namespace Automate.ViewModels
                 }
                 else
                 {
-                   //donner la valeur du role à IWindowService 
-                    _navigationService.NavigateTo<AccueilWindow>();
+                    _navigationService.NavigateTo<AccueilWindow>(null, user.Role);
                     _navigationService.Close(_window);
                     Trace.WriteLine("logged in");
                 }

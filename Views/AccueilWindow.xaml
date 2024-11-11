@@ -9,12 +9,15 @@
         xmlns:viewmodels="clr-namespace:Automate.ViewModels" 
         d:DataContext="{d:DesignInstance Type=viewmodels:AccueilViewModel}"
         mc:Ignorable="d"
-        Title="LoginWindow" SizeToContent="WidthAndHeight" Height="auto" Width="auto"
+        Title="AccueilWindow" SizeToContent="WidthAndHeight" Height="auto" Width="auto"
+        x:Name="AccueilWindowLaVue"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <Window.Resources>
-        <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <utils:AlerteValueConverter x:Key="AlerteValueConverter"/>
+        <utils:LegendeTacheConverter x:Key="LegendeTacheConverter"/>
+        <utils:RoleValueConverter x:Key="RoleValueConverter"/>
         <Style x:Key="MaterialDesignCardsListView" TargetType="ListView">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -55,30 +58,47 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
-
+        <materialDesign:DialogHost Identifier="Alertes">
+            <materialDesign:DialogHost.DialogContent>
+                <local:ConfirmationDialog  />
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
         <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}" HorizontalAlignment="Stretch" Grid.ColumnSpan="6">
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="300" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75" />
                 </Grid.RowDefinitions>
-                <StackPanel VerticalAlignment="Center" Width="300" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.Column="1">
                     <materialDesign:PackIcon Width="75"
-                        Height="75"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Kind="HoneyFarmer"
-                        Foreground="White"/>
+                Height="75"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Kind="HoneyFarmer"
+                Foreground="White"/>
                     <TextBlock VerticalAlignment="Center" Text="Accueil" Foreground="white" FontSize="24"/>
                 </StackPanel>
+                <Button
+                Margin="0,0,100,0"
+                x:Name="LogoutButton"
+                Content="Logout" 
+                Width="113" 
+                Height="39" 
+                Style="{StaticResource MaterialDesignRaisedLightButton}"
+                Command="{Binding LogoutCommand}" 
+                RenderTransformOrigin="0.509,1.411"
+                HorizontalAlignment="Right"
+                Grid.Column="3"
+                VerticalAlignment="Center"/>
             </Grid>
         </Border>
-        
+
         <materialDesign:Card Margin="25" Padding="16" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Horizontal">
@@ -93,7 +113,7 @@
                               Margin="0,10,0,0">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectedDatesChanged">
-                                    <i:InvokeCommandAction Command="{Binding ConsulterJourCalendrierPageCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding ConsulterJourCommand}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Calendar>
@@ -103,12 +123,59 @@
                         Width="145" 
                         Height="43" 
                         Margin="25" 
+                        IsEnabled="{Binding Role, Converter={StaticResource RoleValueConverter}}"
                         Style="{StaticResource MaterialDesignRaisedDarkButton}"
                         Command="{Binding ModifierJourCommand}"
                         HorizontalAlignment="Center" RenderTransformOrigin="0.509,1.411"/>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical">
+
+                    <StackPanel Orientation="Vertical"  Margin="5, 0" Height="280" VerticalAlignment="Top" >
+
+                        <TextBlock Padding="5" VerticalAlignment="Top" Text="Legende." FontSize="24" Margin="5"/>
+
+
+                        <Border Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" Width="auto">
+                            <StackPanel Orientation="Horizontal" >
+                                <StackPanel Orientation="Vertical" >
+                                    <Rectangle VerticalAlignment="Center"  Width="20" Height="20" 
+                    Fill="DarkRed" 
+                    Margin="0,5,10,5"/>
+                                    <Rectangle VerticalAlignment="Center" Width="20" Height="20" 
+                    Fill="Green" 
+                    Margin="0,5,10,5"/>
+                                    <Rectangle VerticalAlignment="Center" Width="20" Height="20" 
+                    Fill="Blue" 
+                    Margin="0,5,10,5"/>
+                                    <Rectangle VerticalAlignment="Center" Width="20" Height="20" 
+                    Fill="Black" 
+                    Margin="0,5,10,5"/>
+                                    <Rectangle VerticalAlignment="Center" Width="20" Height="20" 
+                    Fill="Gold" 
+                    Margin="0,5,10,5"/>
+                                    <Rectangle VerticalAlignment="Center" Width="20" Height="20" 
+                    Fill="Indigo" 
+                    Margin="0,5,10,5"/>
+                                    <Rectangle VerticalAlignment="Center" Width="20" Height="20" 
+                    Fill="DarkOliveGreen" 
+                    Margin="0,5,10,5"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,5,10,5" Text="Rempotage" VerticalAlignment="Center" Height="20"/>
+                                    <TextBlock Margin="0,5,10,5" Text="Semis" VerticalAlignment="Center"  Height="20"/>
+                                    <TextBlock Margin="0,5,10,5" Text="Entretien" VerticalAlignment="Center"  Height="20"/>
+                                    <TextBlock Margin="0,5,10,5" Text="Arrosage" VerticalAlignment="Center"  Height="20"/>
+                                    <TextBlock Margin="0,5,10,5" Text="Recolte" VerticalAlignment="Center"  Height="20"/>
+                                    <TextBlock Margin="0,5,10,5" Text="Commandes" VerticalAlignment="Center"  Height="20"/>
+                                    <TextBlock Margin="0,5,10,5" Text="Evenements" VerticalAlignment="Center"  Height="20"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Vertical" Width="auto">
+                        
                         <ListView 
+                            Height="400"
                             Style="{StaticResource MaterialDesignCardsListView}" 
                             ItemContainerStyle="{StaticResource CustomListViewItemStyle}"
                             x:Name="lvJours"
@@ -129,19 +196,24 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Border VerticalAlignment="Center" Width="100" Height="50" >
-                                                    <TextBlock Text="{Binding NombreAlertes}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Taches, Converter={StaticResource AlerteValueConverter}}" VerticalAlignment="Center"/>
                                                 </Border>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Taches">
+                                    <GridViewColumn Header="Taches" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <ItemsControl ItemsSource="{Binding Taches}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Border Padding="5">
-                                                                <TextBlock Text="{Binding}" />
+                                                            <Border VerticalAlignment="Center">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Rectangle Width="20" Height="20" 
+                                                                    Fill="{Binding ., Converter={StaticResource LegendeTacheConverter}}" 
+                                                                    Margin="0,5,10,5"/>
+                                                                    <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                                </StackPanel>
                                                             </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
@@ -149,7 +221,6 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-
                                     <GridViewColumn Header="Commentaires">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -157,7 +228,7 @@
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <Border Padding="5">
-                                                                <TextBlock Text="{Binding}" />
+                                                                <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
                                                             </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
@@ -169,13 +240,12 @@
                             </ListView.View>
                         </ListView>
 
-                    </StackPanel>
 
+                    </StackPanel>
                 </StackPanel>
-                
             </ScrollViewer>
         </materialDesign:Card>
-        
+
         <Border Grid.Row="2" Grid.Column="0" Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}" HorizontalAlignment="Stretch" Grid.ColumnSpan="6">
         </Border>
     </Grid>

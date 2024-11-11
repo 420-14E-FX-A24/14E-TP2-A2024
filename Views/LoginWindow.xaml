@@ -10,6 +10,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
         mc:Ignorable="d"
         Title="LoginWindow" SizeToContent="WidthAndHeight" Height="auto" Width="auto"
+        x:Name="LoginWindowLaVue"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">

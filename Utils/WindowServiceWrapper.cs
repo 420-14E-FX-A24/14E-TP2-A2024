@@ -9,7 +9,7 @@ namespace Automate.Utils
 
     public class WindowServiceWrapper: IWindowService 
     {
-        private AccueilViewModel _viewModel;
+        private AccueilViewModel _viewModel { get; set;}
         private static IWindowService? _sharedSingleton;
 
         //Prévenir la création d'un autre singleton
@@ -27,16 +27,6 @@ namespace Automate.Utils
             // Access properties through the instance
             var instance = (WindowServiceWrapper)_sharedSingleton;
             var properties = instance._viewModel.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                if (prop.Name == "DateSelection")
-                    MessageBox.Show($"{prop.Name}, {prop.Name == "DateSelection"}");
-                Debug.WriteLine(prop.Name);
-            }
-            if (_sharedSingleton is IWindowService)
-                MessageBox.Show($"{_sharedSingleton.GetType().FullName}, {_sharedSingleton is IWindowService}");
-            else
-                MessageBox.Show($"{_sharedSingleton.GetType().FullName}, {_sharedSingleton is IWindowService}");
             Debug.WriteLine(_sharedSingleton.GetType().FullName); // Debug statement
             return _sharedSingleton;
         }
@@ -53,6 +43,7 @@ namespace Automate.Utils
             get => (string)_viewModel.GetType().GetProperty("Role").GetValue(_viewModel);
             set => _viewModel.GetType().GetProperty("Role").SetValue(_viewModel, value);
         }
+
 
         public void Close()
         {

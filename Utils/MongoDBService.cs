@@ -6,10 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 using static Automate.Models.Jour;
 
 namespace Automate.Utils
@@ -81,10 +83,10 @@ namespace Automate.Utils
             return _jours.Find(filter).ToList();  
         }
 
-        public Jour ModifierJour(DateTime date)
+
+        public Jour ConsulterJour(DateTime date)
         {
             DateTime queryDate = date.ToUniversalTime().Date;
-            var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
             var filter = Builders<Jour>.Filter.And(
                 Builders<Jour>.Filter.Gte(j => j.Date, queryDate),
                 Builders<Jour>.Filter.Lt(j => j.Date, queryDate.AddDays(1))
@@ -121,9 +123,16 @@ namespace Automate.Utils
 
         public void EnregistrerAjoutTache(Tache tache, Jour jour)
         {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Push(j => j.Taches, tache);
-            _jours.UpdateOne(filter, update);
+            if(jour.Id.ToString() == "000000000000000000000000")
+            {
+                RegisterJour(jour);
+            }
+            else
+            {
+                var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+                var update = Builders<Jour>.Update.Push(j => j.Taches, tache);
+                _jours.UpdateOne(filter, update);
+            }
         }
 
         public void EnregistrerAjoutCommentaire(string commentaire, Jour jour)

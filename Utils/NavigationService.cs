@@ -1,29 +1,22 @@
-﻿using Automate.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Automate.Interfaces;
+using Automate.ViewModels;
 using System.Windows;
 
 namespace Automate.Utils
 {
     public class NavigationService
     {
-
-
-        // Méthode pour ouvrir une nouvelle vue
-        public void NavigateTo<T>(object dataContext = null) where T : Window, new()
+        public void NavigateTo<T>(object dataContext = null, string role = null) where T : Window, new()
         {
             var window = new T();
             if (dataContext != null)
-            {
                 window.DataContext = dataContext;
-            }
             window.Show();
+           
+            if (window.DataContext is AccueilViewModel viewModel)
+                viewModel.Role = role;
         }
 
-        // Méthode pour fermer la vue actuelle
         public void Close(Window window)
         {
             window.Close();
