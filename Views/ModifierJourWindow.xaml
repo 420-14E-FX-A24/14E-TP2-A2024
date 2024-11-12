@@ -31,9 +31,7 @@
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="BorderBrush" Value="Blue"/>
                 </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightGray"/>
-                </Trigger>
+               
             </Style.Triggers>
         </Style>
     </Window.Resources>
@@ -52,14 +50,14 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="300" />
                     <ColumnDefinition Width="*" />
+                    
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75" />
                 </Grid.RowDefinitions>
-                <StackPanel VerticalAlignment="Center" Width="300" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
                     <materialDesign:PackIcon Width="75"
                     Height="75"
                     HorizontalAlignment="Center"
@@ -67,7 +65,20 @@
                     Kind="HoneyFarmer"
                     Foreground="White"/>
                     <TextBlock VerticalAlignment="Center" Text="Modification" Foreground="white" FontSize="24"/>
+                    
                 </StackPanel>
+                <Button
+                Margin="0,0,100,0"
+                x:Name="LogoutButton"
+                Content="Logout" 
+                Width="145" 
+                Height="43" 
+                Style="{StaticResource MaterialDesignRaisedLightButton}"
+                Command="{Binding LogoutCommand}" 
+                RenderTransformOrigin="0.509,1.411"
+                HorizontalAlignment="Right"
+                Grid.Column="3"
+                VerticalAlignment="Center"/>
             </Grid>
         </Border>
 
@@ -117,7 +128,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" MaxWidth="840">
                             <Label Margin="15,0,0,0" Height="50" Width="525" VerticalContentAlignment="Center"  Style="{StaticResource MaterialDesignLabel}" >Date</Label>
-                            <TextBlock  Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{Binding JourObservableSelection[0].Date, StringFormat='{}{0:yyyy-MM-dd}'}" />
+                            <TextBlock  Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" Text="{Binding DateSelection, StringFormat='{}{0:yyyy-MM-dd}'}" />
                         </StackPanel>
 
                         <StackPanel Height="50" Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" MaxWidth="840">
@@ -159,12 +170,13 @@
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <Button
                                             HorizontalAlignment="Right"
-                                            Content="+" 
                                             Width="50" 
                                             Height="42" 
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             Command="{Binding AjouterTacheCommand}" RenderTransformOrigin="0.509,1.411" 
-                                            Margin="10,0,10,0"/>
+                                            Margin="10,0,10,0">
+                                                <materialDesign:PackIcon HorizontalAlignment="Center" Kind="PlusBoxMultiple" Width="48" Height="20" Foreground="white"/>
+                                            </Button>
                                             <Button
                                             HorizontalAlignment="Right"
                                             Width="50" 
@@ -172,16 +184,17 @@
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             Command="{Binding ModifierTacheCommand}" RenderTransformOrigin="0.509,1.411" 
                                             Margin="10,0,10,0">
-                                                <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Update" Width="48" Height="20" Foreground="white"/>
+                                                <materialDesign:PackIcon HorizontalAlignment="Center" Kind="ContentSaveAlert" Width="48" Height="20" Foreground="white"/>
                                             </Button>
                                             <Button
                                             HorizontalAlignment="Right"
-                                            Content="-" 
                                             Width="50" 
                                             Height="42" 
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             Command="{Binding RetirerTacheCommand}" RenderTransformOrigin="0.509,1.411" 
-                                            Margin="10,0,10,0"/>
+                                            Margin="10,0,10,0">
+                                                <materialDesign:PackIcon HorizontalAlignment="Center" Kind="TrashCan" Width="48" Height="20" Foreground="white"/>
+                                            </Button>
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>
@@ -190,8 +203,8 @@
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200">
                                     <StackPanel Orientation="Horizontal">
                                         <ListBox Name="lb_taches" VerticalAlignment="Top" Width="740"
-                                        Style="{StaticResource MaterialDesignCardsListBox}" 
-                                        ItemsSource="{Binding JourObservableSelection[0].Taches, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomListBoxItemStyle}" 
+                                        ItemsSource="{Binding LeJour.Taches, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedIndex="{Binding SelectionTache, Mode=TwoWay}">
                                             
                                             <ListBox.ItemTemplate>
@@ -244,13 +257,14 @@
                                                 Text="{Binding Commentaire, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                                 <Button
-                                                HorizontalAlignment="Right"
-                                                Content="+" 
-                                                Width="50" 
-                                                Height="42" 
-                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                                Command="{Binding AjouterCommentaireCommand}" RenderTransformOrigin="0.509,1.411" 
-                                                Margin="10,0,10,0"/>
+                                                    HorizontalAlignment="Right"
+                                                    Width="50" 
+                                                    Height="42" 
+                                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                    Command="{Binding AjouterCommentaireCommand}" RenderTransformOrigin="0.509,1.411" 
+                                                    Margin="10,0,10,0">
+                                                    <materialDesign:PackIcon HorizontalAlignment="Center" Kind="PlusBoxMultiple" Width="48" Height="20" Foreground="white"/>
+                                                </Button>
                                                 <Button
                                                 HorizontalAlignment="Right"
                                                 Width="50" 
@@ -258,16 +272,17 @@
                                                 Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                 Command="{Binding ModifierCommentaireCommand}" RenderTransformOrigin="0.509,1.411" 
                                                 Margin="10,0,10,0">
-                                                 <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Update" Width="48" Height="20" Foreground="white"/>
-                                                 </Button>   
+                                                    <materialDesign:PackIcon HorizontalAlignment="Center" Kind="ContentSaveAlert" Width="48" Height="20" Foreground="white"/>
+                                                 </Button>
                                                 <Button
                                                 HorizontalAlignment="Right"
-                                                Content="-" 
                                                 Width="50" 
                                                 Height="42" 
                                                 Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                                 Command="{Binding RetirerCommentaireCommand}" RenderTransformOrigin="0.509,1.411" 
-                                                Margin="10,0,10,0"/>
+                                                Margin="10,0,10,0">
+                                                    <materialDesign:PackIcon HorizontalAlignment="Center" Kind="TrashCan" Width="48" Height="20" Foreground="white"/>
+                                                </Button>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
@@ -278,7 +293,7 @@
                                     <StackPanel Orientation="Horizontal" >
                                         <ListBox Name="lb_commentaires" VerticalAlignment="Top" Width="740" 
                                             Style="{StaticResource CustomListBoxItemStyle}" 
-                                            ItemsSource="{Binding JourObservableSelection[0].CommentaireTaches, UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding LeJour.CommentaireTaches, UpdateSourceTrigger=PropertyChanged}"
                                             SelectedIndex="{Binding SelectionCommentaire, Mode=TwoWay}"
                                             >
                                            

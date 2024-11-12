@@ -18,9 +18,9 @@ namespace Automate.Utils
             {
                 foreach (Tache tache in taches)
                 {
-                    if (tache == Jour.Tache.Semis)
+                    if (tache == Jour.Tache.Arrosage)
                         arrosages += 1;
-                    else if (tache == Jour.Tache.Arrosage)
+                    else if (tache == Jour.Tache.Semis)
                         semis += 1;
                 }
             }

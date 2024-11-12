@@ -41,7 +41,17 @@ namespace Automate.Utils
         public string Role
         {
             get => (string)_viewModel.GetType().GetProperty("Role").GetValue(_viewModel);
-            set => _viewModel.GetType().GetProperty("Role").SetValue(_viewModel, value);
+            set 
+            {
+                if (value is string) 
+                {
+                    _viewModel.GetType().GetProperty("Role").SetValue(_viewModel, value);
+                    if(Role == null)
+                        Role = value;
+                }
+                
+            }
+            
         }
 
 

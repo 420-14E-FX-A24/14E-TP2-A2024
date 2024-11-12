@@ -80,21 +80,23 @@ namespace Automate.ViewModels
             {
                 Trace.WriteLine("Logout. Retour à LoginWindow.");
             }
-
-            _mongoService = new MongoDBService("AutomateDB");
+            if(_mongoService == null)
+                _mongoService = new MongoDBService("AutomateDB");
             try
             {
                 if (_windowService == null)
-                    _windowService = WindowServiceWrapper.GetInstance(this); 
+                    _windowService = WindowServiceWrapper.GetInstance(this);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
-            if (DateSelection == DateTime.MinValue
-                && _windowService is not null
-                && _windowService.DateSelection == DateTime.MinValue)
+
+            if (_windowService.DateSelection != DateTime.MinValue)
+                DateSelection = _windowService.DateSelection;
+            else
                 DateSelection = DateTime.Now;
+
             ConsulterJourCommand = new RelayCommand(ConsulterJour);
             ModifierJourCommand = new RelayCommand(ModifierJour);
             AjouterTacheCommand = new RelayCommand(AjouterTache);
@@ -115,6 +117,7 @@ namespace Automate.ViewModels
                 if (openedWindow.Title == "AccueilWindow")
                 {
                     ConsulterJourCalendrierPage();
+
                 }
                 else if (openedWindow.Title == "ModifierJourWindow")
                 {
@@ -168,9 +171,13 @@ namespace Automate.ViewModels
             get => _role;
             set
             {
-                if (_role != value)
+                if (_role != value && value is string)
                 {
                     _role = value;
+                    if(_windowService.Role != null)
+                        _windowService.Role = value;
+                   
+                   
                 }
                 OnPropertyChanged(nameof(Role));
             }
@@ -185,14 +192,13 @@ namespace Automate.ViewModels
                 if (_dateSelection != value)
                 {
                     
-                    if (_dateSelection == DateTime.MinValue)
+                    if (_dateSelection == DateTime.MinValue && value != DateTime.MinValue)
                         _dateSelection = DateTime.Now;
                     int mois = ObtenirMois(_dateSelection);
                     _dateSelection = value;
                     if (value.Month != mois)
                         ConsulterJourCalendrierPage();
                     OnPropertyChanged(nameof(DateSelection));
-                    
                 }
             }
         }
@@ -548,13 +554,9 @@ namespace Automate.ViewModels
         public void ObtenirJour()
         {
             if (DateSelection == DateTime.MinValue)
-            {
-                if (_windowService is not null)
-                    DateSelection = _windowService.DateSelection; 
-                else
-                    DateSelection = DateTime.Now;
-            }
-            
+                DateSelection = DateTime.Now;
+            if (_windowService is not null)
+                DateSelection = _windowService.DateSelection;
             JourSelection = new List<Jour>();
             JourSelection.Add(_mongoService.ConsulterJour(DateSelection));
             OnPropertyChanged(nameof(JourSelection));
@@ -595,7 +597,8 @@ namespace Automate.ViewModels
         public void ConsulterJour()
         {
             LeJour = _mongoService.ConsulterJour(DateSelection);
-            VerifierAfficherAlertes(LeJour);
+            if(LeJour != null)
+                VerifierAfficherAlertes(LeJour);
             
         }
 
@@ -642,7 +645,14 @@ namespace Automate.ViewModels
             if(_windowService is not null)
                 _windowService.DateSelection = DateSelection; 
             _navigationService.NavigateTo<ModifierJourWindow>(Window.DataContext);
-            _navigationService.Close(Window);
+            foreach (Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window.Name == "AccueilWindowLaVue")
+                {
+                    window.Close();
+                    break;
+                }
+            } 
         }
 
 

@@ -88,8 +88,8 @@
                 Margin="0,0,100,0"
                 x:Name="LogoutButton"
                 Content="Logout" 
-                Width="113" 
-                Height="39" 
+                Width="145" 
+                Height="43" 
                 Style="{StaticResource MaterialDesignRaisedLightButton}"
                 Command="{Binding LogoutCommand}" 
                 RenderTransformOrigin="0.509,1.411"
@@ -124,6 +124,7 @@
                         Height="43" 
                         Margin="25" 
                         IsEnabled="{Binding Role, Converter={StaticResource RoleValueConverter}}"
+                        ToolTip="Double clic"
                         Style="{StaticResource MaterialDesignRaisedDarkButton}"
                         Command="{Binding ModifierJourCommand}"
                         HorizontalAlignment="Center" RenderTransformOrigin="0.509,1.411"/>
@@ -187,7 +188,7 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Border VerticalAlignment="Center" Width="100" Height="50" Padding="15">
-                                                    <TextBlock Text="{Binding Numero}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Date, StringFormat='{}{0:dd}'}" VerticalAlignment="Center"/>
                                                 </Border>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
