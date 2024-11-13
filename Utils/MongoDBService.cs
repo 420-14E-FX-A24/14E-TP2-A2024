@@ -27,7 +27,7 @@ namespace Automate.Utils
 			var premierUtilisateur = _users.Find(Builders<User>.Filter.Empty).FirstOrDefault();
 			if (premierUtilisateur is null)
 			{
-				premierUtilisateur = new User { Username = "Frederic", PasswordHash = "$2a$11$Rc0K8jktZrVizcxsNmEQU.c94VWEHjKxrmk0I09p5dkBteMSoJ2Bq", Role = "Admin" };
+				premierUtilisateur = new User { Username = "Frederic", PasswordHash = "$2a$11$Rc0K8jktZrVizcxsNmEQU.c94VWEHjKxrmk0I09p5dkBteMSoJ2Bq", Role = Role.Admin };
 				RegisterUser(premierUtilisateur);
 			}
 			var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();

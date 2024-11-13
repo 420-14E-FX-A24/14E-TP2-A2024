@@ -22,7 +22,12 @@ namespace Automate.Models
         public string PasswordHash { get; set; } = string.Empty;
 
         [BsonElement("Role")]
-        public string Role { get; set; } = string.Empty; // Enum ?
-        public DateTime TimeCreated { get; internal set; }
+        public Role Role { get; set; }
+    }
+
+    public enum Role
+    {
+        User,
+        Admin
     }
 }
