@@ -1,12 +1,13 @@
 ﻿using Automate.Interfaces;
 using Automate.ViewModels;
+using Automate.Models;
 using System.Windows;
 
 namespace Automate.Utils
 {
     public class NavigationService
     {
-        public void NavigateTo<T>(object dataContext = null, string role = null) where T : Window, new()
+        public void NavigateTo<T>(object dataContext = null, Role? role = null) where T : Window, new()
         {
             var window = new T();
             if (dataContext != null)

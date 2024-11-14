@@ -9,6 +9,7 @@ using System.ComponentModel;
 using static Automate.Models.Jour;
 using System.Windows.Media;
 using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 
 namespace Automate.Models
 {
@@ -27,11 +28,11 @@ namespace Automate.Models
 
         [BsonElement("Taches")]
         [BsonIgnoreIfNull]
-        public List<Tache> Taches { get; set; }
+		public ObservableCollection<Tache> Taches { get; set; }
 
         [BsonElement("CommentaireTaches")]
         [BsonIgnoreIfNull]
-        public List<string> CommentaireTaches { get; set; }
+		public ObservableCollection<string> CommentaireTaches { get; set; }
 
         [BsonElement("NombreAlertes")]
         public int NombreAlertes { get; set; }
@@ -55,20 +56,20 @@ namespace Automate.Models
 
         public Jour()
         {
-            DateTime DateAujourdhui = DateTime.Now;
-            TimeCreated = DateAujourdhui;
-            Taches = new List<Tache>();
-            CommentaireTaches = new List<string>();
+            DateTime aujourdhui = DateTime.Now;
+            TimeCreated = DateTime.Now;
+            Taches = new ObservableCollection<Tache>();
+            CommentaireTaches = new ObservableCollection<string>();
             NombreAlertes = 0;
-            Numero = DateAujourdhui.Day;
-            Date = DateAujourdhui.ToLocalTime();
+            Numero = aujourdhui.Day;
+            Date = aujourdhui.ToLocalTime();
         }
 
         public Jour(Jour jour)
         {
             TimeCreated = jour.Date;
-            Taches = new List<Tache>(jour.Taches);
-            CommentaireTaches = new List<string>(jour.CommentaireTaches);
+            Taches = new ObservableCollection<Tache>(jour.Taches);
+            CommentaireTaches = new ObservableCollection<string>(jour.CommentaireTaches);
             NombreAlertes = jour.NombreAlertes;
             Numero = jour.Numero;
             Date = jour.Date;
@@ -77,30 +78,32 @@ namespace Automate.Models
 
         public Jour(DateTime date)
         {
-            DateTime DateAujourdhui = DateTime.Now;
-            TimeCreated = DateAujourdhui;
-            Taches = new List<Tache>();
-            CommentaireTaches = new List<string>();
+            DateTime aujourdhui = DateTime.Now;
+            TimeCreated = aujourdhui;
+            Taches = new ObservableCollection<Tache>();
+            CommentaireTaches = new ObservableCollection<string>();
             NombreAlertes = 0;
             Numero = date.Day;
             Date = date.ToLocalTime();
         }
 
-        public Jour(List<Tache> taches, List<string> commentairesTaches, DateTime date)
-        {
-            DateTime DateAujourdhui = DateTime.Now;
-            TimeCreated = DateAujourdhui;
-            Taches = taches;
-            CommentaireTaches = commentairesTaches;
-            List<Tache> traitementTacheAlertes = taches.FindAll(tache =>
-            {
-                int numeroTache = (int)tache;
-                return numeroTache == 1 || numeroTache == 6;
-            });
-            NombreAlertes = traitementTacheAlertes.Count;
-            Numero = date.Day;
-            Date = date.ToLocalTime();
-        }
+		public Jour(ObservableCollection<Tache> taches, ObservableCollection<string> commentairesTaches, DateTime date)
+		{
+			DateTime aujourdhui = DateTime.Now;
+			TimeCreated = aujourdhui;
+			Taches = taches;
+			CommentaireTaches = commentairesTaches;
 
-    }
+			var traitementTacheAlertes = taches.Where(tache =>
+			{
+				int numeroTache = (int)tache;
+				return numeroTache == 1 || numeroTache == 6;
+			}).ToList();
+
+			NombreAlertes = traitementTacheAlertes.Count;
+			Numero = date.Day;
+			Date = date.ToLocalTime();
+		}
+
+	}
 }

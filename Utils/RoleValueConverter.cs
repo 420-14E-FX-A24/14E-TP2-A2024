@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Automate.Models;
 
 namespace Automate.Utils
 {
@@ -8,9 +9,9 @@ namespace Automate.Utils
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string role)
+            if (value is Role role)
             {
-                return role == "Admin";
+                return role == Role.Admin;
             }
             return false;
         }

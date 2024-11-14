@@ -18,8 +18,8 @@ namespace Automate.Utils
         {
             if (value is Tache tache)
             {
-
                 var legende = Brushes.Transparent;
+
                 switch (tache)
                 {
                     case Jour.Tache.Semis:
@@ -51,7 +51,6 @@ namespace Automate.Utils
             }
             return Brushes.Transparent;
         }
-
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

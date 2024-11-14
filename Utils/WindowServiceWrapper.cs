@@ -1,7 +1,7 @@
 ﻿using Automate.Interfaces;
 using System;
 using System.Diagnostics;
-using System.Windows;
+using Automate.Models;
 using Automate.ViewModels;
 
 namespace Automate.Utils
@@ -38,14 +38,20 @@ namespace Automate.Utils
         }
 
 
-        public string Role
-        {
-            get => (string)_viewModel.GetType().GetProperty("Role").GetValue(_viewModel);
-            set => _viewModel.GetType().GetProperty("Role").SetValue(_viewModel, value);
-        }
+		public Role? Role
+		{
+			get => _viewModel.GetType().GetProperty("Role")?.GetValue(_viewModel) as Role?;
+			set
+			{
+				if (value is not null)
+				{
+					_viewModel.GetType().GetProperty("Role")?.SetValue(_viewModel, value);
+				}
+			}
+		}
 
 
-        public void Close()
+		public void Close()
         {
             _viewModel.Window.Close();
         }

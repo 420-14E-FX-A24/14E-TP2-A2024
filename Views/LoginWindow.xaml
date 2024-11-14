@@ -65,7 +65,7 @@
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
                              Width="200" Height="50" 
                              Margin="25"
-                             materialDesign:HintAssist.Hint="Kev"/>
+                             materialDesign:HintAssist.Hint="Nom d'utilisateur"/>
                     <Border BorderThickness="2.5"
                             CornerRadius="2"
                             BorderBrush="{Binding HasPasswordErrors, Converter={StaticResource BoolToColorConverter}}"
@@ -74,7 +74,8 @@
                         <PasswordBox x:Name="PasswordBox" 
                                      PasswordChanged="PasswordBox_PasswordChanged" 
                                      Margin="-1,-1,-1,-1"
-                                     MaxLength="20"/>
+                                     MaxLength="20"
+                                     materialDesign:HintAssist.Hint="Mot de passe"/>
                     </Border>
                     <Button Content="Se connecter" 
                             Width="145" 

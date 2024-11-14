@@ -19,53 +19,45 @@ namespace Automate.Utils
     public class MongoDBService
     {
         private readonly IMongoDatabase _database;
-        private readonly IMongoCollection<UserModel> _users;
+        private readonly IMongoCollection<User> _users;
         private readonly IMongoCollection<Jour> _jours;
 
-        public MongoDBService(string databaseName)
-        {
-            var client = new MongoClient("mongodb://localhost:27017"); // URL du serveur MongoDB
-            _database = client.GetDatabase(databaseName);
-            _users = _database.GetCollection<UserModel>("Users");
-            _jours = _database.GetCollection<Jour>("Jours");
-            var user = FindUserRoleFirstOrDefault("User");
-            var admin = FindUserRoleFirstOrDefault("Admin");
-            if(user is null)
-            {
-                user = new UserModel { Username = "Andre", Password = ".", Role = "User" };
-                RegisterUser(user);
-            }
-            if (admin is null)
-            {
-                admin = new UserModel { Username = "Frederic", Password = ".", Role = "Admin" };
-                RegisterUser(admin);
-            }
-            var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
-            if (premierJour is null)
-            {
-                premierJour = new Jour();
-                RegisterJour(premierJour);
-            }
-        }
+		public MongoDBService(string databaseName)
+		{
+			var client = new MongoClient("mongodb://localhost:27017");
+			_database = client.GetDatabase(databaseName);
+			_users = _database.GetCollection<User>("Users");
+			_jours = _database.GetCollection<Jour>("Jours");
 
-        public UserModel FindUserRoleFirstOrDefault(string role)
+			AjoutPremierUtilisateur(Role.User, "Andre");
+			AjoutPremierUtilisateur(Role.Admin, "Frederic");
+		}
+
+		private void AjoutPremierUtilisateur(Role role, string username)
+		{
+            var user = FindUserRoleFirstOrDefault(role);
+
+            if (user is null) 
+                RegisterUser(new User { Username = username, PasswordHash = "$2a$11$Rc0K8jktZrVizcxsNmEQU.c94VWEHjKxrmk0I09p5dkBteMSoJ2Bq", Role = role });
+		}
+
+		private User? FindUserRoleFirstOrDefault(Role role)
         {
-            var filter = Builders<UserModel>.Filter.Eq(user => user.Role, role);
+            var filter = Builders<User>.Filter.Eq(user => user.Role, role);
             return _users.Find(filter).FirstOrDefault();
         }
 
-        public IMongoCollection<T> GetCollection<T>(string collectionName) 
-        {
-            return _database.GetCollection<T>(collectionName);
-        }
+		public User? Authenticate(string? username, string? password)
+		{
+			var user = _users.Find(u => u.Username == username).FirstOrDefault();
+			if (user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+			{
+				return user;
+			}
+			return null;
+		}
 
-        public UserModel Authenticate(string? username, string? password)
-        {
-            var user = _users.Find(u => u.Username == username && u.Password == password).FirstOrDefault();
-            return user;
-        }
-
-        public List<Jour> ConsulterJourCalendrierPage(DateTime date)
+		public List<Jour> ConsulterJourCalendrierPage(DateTime date)
         {
             
             DateTime DepartJour = new DateTime(date.Year, date.Month, 1);
@@ -84,20 +76,14 @@ namespace Automate.Utils
         }
 
 
-        public Jour ConsulterJour(DateTime date)
+        public Jour? ConsulterJour(DateTime date)
         {
-            DateTime queryDate = date.ToUniversalTime().Date;
-            var filter = Builders<Jour>.Filter.And(
-                Builders<Jour>.Filter.Gte(j => j.Date, queryDate),
-                Builders<Jour>.Filter.Lt(j => j.Date, queryDate.AddDays(1))
-            );
-            var result = _jours.Find(filter).FirstOrDefault();
-            return result;
+			var filter = Builders<Jour>.Filter.Eq(j => j.Numero, date.Day);
+			return _jours.Find(filter).FirstOrDefault();
         }
 
-        public void RegisterUser(UserModel user)
+        public void RegisterUser(User user)
         {
-            user.TimeCreated = DateTime.UtcNow;
             _users.InsertOne(user);
         }
 
@@ -108,18 +94,25 @@ namespace Automate.Utils
 
 
 
-        public void EnregistrerModificationTache(Tache tache, int index, Jour jour)
+		public void EnregistrerModificationTache(Tache tache, int index, Jour jour)
+		{
+			if (index < 0 || index >= jour.Taches.Count) return;
+
+			var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+			var update = Builders<Jour>.Update.Set(j => j.Taches[index], tache);
+
+			_jours.UpdateOne(filter, update);
+		}
+
+		public void EnregistrerModificationCommentaire(string commentaire, int index, Jour jour)
         {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Set(j => j.Taches[index], tache);
-            _jours.UpdateOne(filter, update);
-        }
-        public void EnregistrerModificationCommentaire(string commentaire, int index, Jour jour)
-        {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Set(j => j.CommentaireTaches[index], commentaire);
-            _jours.UpdateOne(filter, update);
-        }
+			if (index < 0 || index >= jour.Taches.Count) return;
+
+			var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
+			var update = Builders<Jour>.Update.Set(j => j.CommentaireTaches[index], commentaire);
+
+			_jours.UpdateOne(filter, update);
+		}
 
         public void EnregistrerAjoutTache(Tache tache, Jour jour)
         {
