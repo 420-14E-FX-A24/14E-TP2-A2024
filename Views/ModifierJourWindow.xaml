@@ -49,14 +49,14 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="300" />
                     <ColumnDefinition Width="*" />
+                    
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75" />
                 </Grid.RowDefinitions>
-                <StackPanel VerticalAlignment="Center" Width="300" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
                     <materialDesign:PackIcon Width="75"
                     Height="75"
                     HorizontalAlignment="Center"
@@ -64,6 +64,7 @@
                     Kind="HoneyFarmer"
                     Foreground="White"/>
                     <TextBlock VerticalAlignment="Center" Text="Modification" Foreground="white" FontSize="24"/>
+                    
                 </StackPanel>
                 <Button
                     Grid.Column="4"
