@@ -14,13 +14,10 @@ namespace Automate.Models
 		[BsonElement("Password")]
 		public string PasswordHash { get; set; } = string.Empty;
 
-		[BsonElement("Role")]
-		public Role Role { get; set; }
-	}
+		[BsonElement("IsAdmin")]
+		public bool IsAdmin { get; set; } = false;
 
-	public enum Role
-	{
-		User,
-		Admin
+		[BsonElement("IsDeleted")]
+		public bool IsDeleted { get; set; } = false;
 	}
 }

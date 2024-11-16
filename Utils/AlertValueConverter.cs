@@ -4,20 +4,19 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using static Automate.Models.Jour;
 
 namespace Automate.Utils
 {
-    public class AlerteValueConverter : IValueConverter
+    public class AlertValueConverter : IValueConverter
     {
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is List<Tache> taches)
+			if (value is List<Task.TypeEnum> taches)
 			{
-				int arrosages = taches.Count(t => t == Jour.Tache.Arrosage);
-				int semis = taches.Count(t => t == Jour.Tache.Semis);
-				return $"Arrosages: {arrosages}\nSemis: {semis}";
+				int arrosagesCount = taches.Count(t => t == Task.TypeEnum.Arrosage);
+				int semisCount = taches.Count(t => t == Task.TypeEnum.Semis);
+				return $"Arrosages: {arrosagesCount}\nSemis: {semisCount}";
 			}
 			return string.Empty;
 		}

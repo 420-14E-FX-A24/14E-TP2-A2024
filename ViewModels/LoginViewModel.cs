@@ -5,22 +5,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Automate.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
-        private string? _username;
-        private string? _password;
         private readonly MongoDBService _mongoService;
         private readonly NavigationService _navigationService;
-        private static IWindowService _windowService;
         private Window _window;
 
 		private readonly Dictionary<string, List<string>> _errors = new();
@@ -41,7 +36,8 @@ namespace Automate.ViewModels
             _window = openedWindow;
         }
 
-        public string? Username
+		private string? _username;
+		public string? Username
         {
             get => _username;
             set
@@ -52,7 +48,8 @@ namespace Automate.ViewModels
             }
         }
 
-        public string? Password
+		private string? _password;
+		public string? Password
         {
             get => _password;
             set
@@ -78,7 +75,6 @@ namespace Automate.ViewModels
             }
         }
 
-        //méthodes
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -96,13 +92,11 @@ namespace Automate.ViewModels
                 {
                     AddError("Username", "Nom d'utilisateur ou mot de passe invalide");
                     AddError("Password", string.Empty);
-                    Trace.WriteLine("invalid");
                 }
                 else
                 {
-                    _navigationService.NavigateTo<AccueilWindow>(null, user.Role);
+                    _navigationService.NavigateTo<HomeWindow>(null, user.IsAdmin);
                     _navigationService.Close(_window);
-                    Trace.WriteLine("logged in");
                 }
 
             }
