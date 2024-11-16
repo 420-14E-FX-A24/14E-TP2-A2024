@@ -1,64 +1,72 @@
 ﻿using Automate.Interfaces;
+using Automate.Models;
 using System;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.Windows;
-using Automate.ViewModels;
 
 namespace Automate.Utils
 {
+	public class WindowServiceWrapper : IWindowService
+	{
+		private static IWindowService? _sharedSingleton;
+		private object _viewModel;
+		private Window _window;
 
-    public class WindowServiceWrapper: IWindowService 
-    {
-        private AccueilViewModel _viewModel { get; set;}
-        private static IWindowService? _sharedSingleton;
+		private WindowServiceWrapper(object viewModel, Window window)
+		{
+			_viewModel = viewModel;
+			_window = window;
+		}
 
-        //Prévenir la création d'un autre singleton
-        private WindowServiceWrapper(AccueilViewModel viewModel)
-        {
-            _viewModel = viewModel;
-        }
+		public static IWindowService GetInstance(object viewModel, Window window)
+		{
+			if (_sharedSingleton is null)
+			{
+				_sharedSingleton = new WindowServiceWrapper(viewModel, window);
+			}
 
-        public static IWindowService GetInstance(AccueilViewModel viewModel)
-        {
-            if(_sharedSingleton == null)
-            {
-                _sharedSingleton = new WindowServiceWrapper(viewModel);
-            }
-            // Access properties through the instance
-            var instance = (WindowServiceWrapper)_sharedSingleton;
-            var properties = instance._viewModel.GetType().GetProperties();
-            Debug.WriteLine(_sharedSingleton.GetType().FullName); // Debug statement
-            return _sharedSingleton;
-        }
+			return _sharedSingleton;
+		}
 
-        public DateTime DateSelection
-        {
-            get => (DateTime)_viewModel.GetType().GetProperty("DateSelection").GetValue(_viewModel);
-            set => _viewModel.GetType().GetProperty("DateSelection").SetValue(_viewModel, value);
-        }
+		public DateTime DateSelection
+		{
+			get => (_viewModel as IWindowService)?.DateSelection ?? DateTime.MinValue;
+			set
+			{
+				if (_viewModel is IWindowService service)
+				{
+					service.DateSelection = value;
+				}
+			}
+		}
 
+		public bool IsAdmin
+		{
+			get => (_viewModel as IWindowService)?.IsAdmin ?? false;
+			set
+			{
+				if (_viewModel is IWindowService service)
+				{
+					service.IsAdmin = value;
+				}
+			}
+		}
 
-        public string Role
-        {
-            get => (string)_viewModel.GetType().GetProperty("Role").GetValue(_viewModel);
-            set 
-            {
-                if (value is string) 
-                {
-                    _viewModel.GetType().GetProperty("Role").SetValue(_viewModel, value);
-                    if(Role == null)
-                        Role = value;
-                }
-                
-            }
-            
-        }
+		public ObservableCollection<Task> Tasks
+		{
+			get => (_viewModel as IWindowService)?.Tasks ?? new ObservableCollection<Task>();
+			set
+			{
+				if (_viewModel is IWindowService service)
+				{
+					service.Tasks = value;
+				}
+			}
+		}
 
-
-        public void Close()
-        {
-            _viewModel.Window.Close();
-        }
-
-    }
+		public void Close()
+		{
+			_window.Close();
+		}
+	}
 }

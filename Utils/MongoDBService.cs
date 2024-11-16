@@ -1,161 +1,104 @@
 ﻿using Automate.Models;
-using Microsoft.Extensions.Primitives;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.Data;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Xml.Linq;
-using static Automate.Models.Jour;
 
 namespace Automate.Utils
 {
     public class MongoDBService
     {
         private readonly IMongoDatabase _database;
-        private readonly IMongoCollection<UserModel> _users;
-        private readonly IMongoCollection<Jour> _jours;
+        private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<Task> _tasks;
 
-        public MongoDBService(string databaseName)
-        {
-            var client = new MongoClient("mongodb://localhost:27017"); // URL du serveur MongoDB
-            _database = client.GetDatabase(databaseName);
-            _users = _database.GetCollection<UserModel>("Users");
-            _jours = _database.GetCollection<Jour>("Jours");
-            var user = FindUserRoleFirstOrDefault("User");
-            var admin = FindUserRoleFirstOrDefault("Admin");
-            if(user is null)
-            {
-                user = new UserModel { Username = "Andre", Password = ".", Role = "User" };
-                RegisterUser(user);
-            }
-            if (admin is null)
-            {
-                admin = new UserModel { Username = "Frederic", Password = ".", Role = "Admin" };
-                RegisterUser(admin);
-            }
-            var premierJour = _jours.Find(Builders<Jour>.Filter.Empty).FirstOrDefault();
-            if (premierJour is null)
-            {
-                premierJour = new Jour();
-                RegisterJour(premierJour);
-            }
-        }
+		public MongoDBService(string databaseName)
+		{
+			var client = new MongoClient("mongodb://localhost:27017");
+			_database = client.GetDatabase(databaseName);
+			_users = _database.GetCollection<User>("Users");
+			_tasks = _database.GetCollection<Task>("Tasks");
 
-        public UserModel FindUserRoleFirstOrDefault(string role)
+			AddFirstUser("Andre", false);
+			AddFirstUser("Frederic", true);
+		}
+
+		private void AddFirstUser(string username, bool isAdmin)
+		{
+            var user = FindUserRoleFirstOrDefault(isAdmin);
+
+            if (user is null) 
+                RegisterUser(new User { Username = username, PasswordHash = "$2a$11$Rc0K8jktZrVizcxsNmEQU.c94VWEHjKxrmk0I09p5dkBteMSoJ2Bq", IsAdmin = isAdmin });
+		}
+
+		private User? FindUserRoleFirstOrDefault(bool isAdmin)
         {
-            var filter = Builders<UserModel>.Filter.Eq(user => user.Role, role);
+            var filter = Builders<User>.Filter.Eq(user => user.IsAdmin, isAdmin);
             return _users.Find(filter).FirstOrDefault();
         }
 
-        public IMongoCollection<T> GetCollection<T>(string collectionName) 
+		public virtual User? Authenticate(string? username, string? password)
+		{
+			var filter = Builders<User>.Filter.And(
+				Builders<User>.Filter.Eq(u => u.Username, username),
+				Builders<User>.Filter.Eq(u => u.IsDeleted, false)
+			);
+
+			var user = _users.Find(filter).FirstOrDefault();
+
+			if (user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+			{
+				return user;
+			}
+			return null;
+		}
+
+		public ObservableCollection<Task> GetMonthTasks(DateTime date)
+		{
+			DateTime startOfMonth = new DateTime(date.Year, date.Month, 1);
+			DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1).Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+			var filter = Builders<Task>.Filter.And(
+				Builders<Task>.Filter.Gte(t => t.Date, startOfMonth),
+				Builders<Task>.Filter.Lte(t => t.Date, endOfMonth),
+				Builders<Task>.Filter.Eq(t => t.IsDeleted, false)
+			);
+
+			var tasks = _tasks.Find(filter).ToList();
+
+			return new ObservableCollection<Task>(tasks);
+		}
+
+		public ObservableCollection<Task> GetTasks(DateTime date)
+		{
+			var filter = Builders<Task>.Filter.And(
+				Builders<Task>.Filter.Eq(t => t.Date, date.Date),
+				Builders<Task>.Filter.Eq(t => t.IsDeleted, false)
+			);
+			var tasks = _tasks.Find(filter).ToList();
+
+			return new ObservableCollection<Task>(tasks);
+		}
+
+		public void RegisterUser(User user)
         {
-            return _database.GetCollection<T>(collectionName);
-        }
-
-        public UserModel Authenticate(string? username, string? password)
-        {
-            var user = _users.Find(u => u.Username == username && u.Password == password).FirstOrDefault();
-            return user;
-        }
-
-        public List<Jour> ConsulterJourCalendrierPage(DateTime date)
-        {
-            
-            DateTime DepartJour = new DateTime(date.Year, date.Month, 1);
-            DateTime FinJour = DepartJour.AddMonths(1).AddDays(-1);
-
-            int PremierJourAnnee = DepartJour.DayOfYear;
-            int DernierJourAnnee = FinJour.DayOfYear;
-
-            var filter = new BsonDocument("$expr", new BsonDocument("$and", new BsonArray
-            {
-                new BsonDocument("$gte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), PremierJourAnnee }),
-                new BsonDocument("$lte", new BsonArray { new BsonDocument("$dayOfYear", "$Date"), DernierJourAnnee })
-            }));
-
-            return _jours.Find(filter).ToList();  
-        }
-
-
-        public Jour ConsulterJour(DateTime date)
-        {
-            DateTime queryDate = date.ToUniversalTime().Date;
-            var filter = Builders<Jour>.Filter.And(
-                Builders<Jour>.Filter.Gte(j => j.Date, queryDate),
-                Builders<Jour>.Filter.Lt(j => j.Date, queryDate.AddDays(1))
-            );
-            var result = _jours.Find(filter).FirstOrDefault();
-            return result;
-        }
-
-        public void RegisterUser(UserModel user)
-        {
-            user.TimeCreated = DateTime.UtcNow;
             _users.InsertOne(user);
         }
 
-        public void RegisterJour(Jour jour)
+        public void SaveTask(Task task)
         {
-            _jours.InsertOne(jour);
+			var filter = Builders<Task>.Filter.Eq(t => t.Id, task.Id);
+
+			_tasks.ReplaceOne(filter, task, new ReplaceOptions { IsUpsert = true });
         }
 
-
-
-        public void EnregistrerModificationTache(Tache tache, int index, Jour jour)
+        public void RemoveTask(Task task)
         {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Set(j => j.Taches[index], tache);
-            _jours.UpdateOne(filter, update);
-        }
-        public void EnregistrerModificationCommentaire(string commentaire, int index, Jour jour)
-        {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Set(j => j.CommentaireTaches[index], commentaire);
-            _jours.UpdateOne(filter, update);
-        }
+			var filter = Builders<Task>.Filter.Eq(t => t.Id, task.Id);
+			var update = Builders<Task>.Update.Set(t => t.IsDeleted, true);
 
-        public void EnregistrerAjoutTache(Tache tache, Jour jour)
-        {
-            if(jour.Id.ToString() == "000000000000000000000000")
-            {
-                RegisterJour(jour);
-            }
-            else
-            {
-                var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-                var update = Builders<Jour>.Update.Push(j => j.Taches, tache);
-                _jours.UpdateOne(filter, update);
-            }
-        }
-
-        public void EnregistrerAjoutCommentaire(string commentaire, Jour jour)
-        {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Push(j => j.CommentaireTaches, commentaire);
-            _jours.UpdateOne(filter, update);
-        }
-
-        public void EnregistrerRetraitTache(Tache tache, Jour jour)
-        {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Pull(j => j.Taches, tache);
-            _jours.UpdateOne(filter, update);
-        }
-
-        public void EnregistrerRetraitCommentaire(string commentaire, Jour jour)
-        {
-            var filter = Builders<Jour>.Filter.Eq(j => j.Id, jour.Id);
-            var update = Builders<Jour>.Update.Pull(j => j.CommentaireTaches, commentaire);
-            _jours.UpdateOne(filter, update);
-        }
-
+			_tasks.UpdateOne(filter, update);
+		}
     }
 
 }
